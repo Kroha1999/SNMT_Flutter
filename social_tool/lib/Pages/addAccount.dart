@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-
+import "package:social_tool/Accounts/instaAccount.dart";
 
 class AddAccountPage extends StatelessWidget {
 
@@ -17,7 +17,9 @@ class AddAccountPage extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.person_add, color: Colors.orange,),
                 iconSize: 100.0,
-                onPressed: null,
+                onPressed: (){
+                  InstaAcccount().getUser("_bod.ka", "mx6kulksde");
+                },
               ),
               Text("Add Account"),
             ],

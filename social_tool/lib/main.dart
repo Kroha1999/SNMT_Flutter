@@ -1,8 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
+//Accounts
+import 'Accounts/instaAccount.dart';
+
 //Pages
-import 'Pages/account.dart' as acc;
+import 'Pages/account.dart' as myAcc;
 import 'Pages/addAccount.dart' as addAcc;
 import 'Pages/makePost.dart' as makePost;
 import 'Pages/post.dart' as myPost;
@@ -17,13 +20,15 @@ void main() => runApp(MyApp());
 
 //App creation
 class MyApp extends StatelessWidget{
+
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
       title: 'Flutter SNMT',
       home: Home(),
       routes: <String, WidgetBuilder>{
-        "/accountPage": (BuildContext context) => acc.AccountPage(),
+        "/accountPage": (BuildContext context) => myAcc.AccountPage(),
         "/addAccountPage": (BuildContext context) => addAcc.AddAccountPage(),
         "/makePost": (BuildContext context) => makePost.MakePost(),
         "/myPost": (BuildContext context) => myPost.MyPost(),
@@ -141,7 +146,9 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
         backgroundColor: _interfaceCol,
         icon: Icon(Icons.add),  
       );
+      
   }
 }
 
-
+  
+ 

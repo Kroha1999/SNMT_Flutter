@@ -2,37 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class AccountsTab extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: ListView(children: <Widget>[
-          AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",),
-          AccountListEl("Bohdan Krokhmaliuk","@bodik","Twitter","EN",imageurl: "https://bit.ly/2NnRaN2",),
-          AccountListEl("Zoriana Bighun","@zorik","Facebook","EN",imageurl: "https://bit.ly/2MrAynL"),
-          AccountListEl("Unknown Person","@unknownMe","Instagram","EN",),
-          AccountListEl("Zoriana Bighun","@zorik","Facebook","EN",imageurl: "https://bit.ly/2MrAynL"),
-          AccountListEl("Unknown Person","@unknownMe","Instagram","EN",),
-          AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",),
-          AccountListEl("Unknown Person","@unknownMe","Instagram","EN",),
-          AccountListEl("Bohdan Krokhmaliuk","@bodik","Twitter","EN",imageurl: "https://bit.ly/2NnRaN2",),
-          AccountListEl("Unknown Person","@unknownMe","Instagram","EN",),
-          AccountListEl("Bohdan Krokhmaliuk","@bodik","Twitter","EN",imageurl: "https://bit.ly/2NnRaN2",),
-          AccountListEl("Zoriana Bighun","@zorik","Facebook","EN",imageurl: "https://bit.ly/2MrAynL"),
-          AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",),
-          AccountListEl("Bohdan Krokhmaliuk","@bodik","Twitter","EN",imageurl: "https://bit.ly/2NnRaN2",),
-          AccountListEl("Unknown Person","@unknownMe","Instagram","EN",),
-          AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",),
-          AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",),
-          AccountListEl("Zoriana Bighun","@zorik","Facebook","EN",imageurl: "https://bit.ly/2MrAynL"),
-          AccountListEl("Unknown Person","@unknownMe","Instagram","EN",),
-          AccountListEl("Bohdan Krokhmaliuk","@bodik","Twitter","EN",imageurl: "https://bit.ly/2NnRaN2",),
-        ],),
+        child: AccountsListView()
       ),
       
     );
   }
 }
+
+class AccountsListView extends StatefulWidget {
+  @override
+  AccountsListViewState createState() => AccountsListViewState();
+}
+
+class AccountsListViewState extends State<AccountsListView> {
+  
+  static List<AccountListEl> accounts = [AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",)];
+
+  void addAccountToList(name,nick,social,lan,img){
+    setState(() {
+     accounts.add(new AccountListEl(name,nick,social,lan,imageurl:img)); 
+    });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: accounts.map((AccountListEl acc){return acc;}).toList(),
+    );
+  }
+}
+
+
+
 
 
 class AccountListEl extends StatelessWidget {
