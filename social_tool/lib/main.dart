@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
-//Accounts
-import 'Accounts/instaAccount.dart';
+import 'package:social_tool/Data/dataController.dart';
 
 //Pages
 import 'Pages/account.dart' as myAcc;
@@ -20,14 +18,14 @@ void main() => runApp(MyApp());
 
 //App creation
 class MyApp extends StatelessWidget{
-
-
+  
   @override
   Widget build(BuildContext context){
     return MaterialApp(
       title: 'Flutter SNMT',
       home: Home(),
       routes: <String, WidgetBuilder>{
+        "/home": (BuildContext context) => Home(),
         "/accountPage": (BuildContext context) => myAcc.AccountPage(),
         "/addAccountPage": (BuildContext context) => addAcc.AddAccountPage(),
         "/makePost": (BuildContext context) => makePost.MakePost(),
@@ -85,7 +83,11 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.settings),
-                  onPressed: (){Navigator.of(context).pushNamed('/settings');},
+                  onPressed: (){
+                    //TESTING LOADING OF ACCOUNTS'
+                    DataController.getAccounts();
+                    //Navigator.of(context).pushNamed('/settings');
+                    },
                 )
               ],
               
@@ -114,8 +116,8 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
         child: _FABonTab(),
         transitionBuilder: (Widget child, Animation<double> animation){
           final scaleTween = TweenSequence([
-            TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3),weight: 2),
-            TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0),weight: 3),
+            TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.1),weight: 1),
+            TweenSequenceItem(tween: Tween(begin: 0.1, end: 1.0),weight: 1),
           ]);
           return ScaleTransition(
             scale: scaleTween.animate(animation),
@@ -131,7 +133,7 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
   Widget _FABonTab(){
     return _tabController.index == 0
       ? FloatingActionButton.extended(
-        heroTag: 'AddAccount',
+        heroTag: 'btn1',
         key: UniqueKey(),
         onPressed: (){Navigator.of(context).pushNamed('/addAccountPage');},
         backgroundColor: _interfaceCol,
@@ -139,7 +141,7 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
         label: Text("Account"),
         )
       : FloatingActionButton.extended(
-        heroTag: 'Post',
+        heroTag: 'btn2',
         key: UniqueKey(),
         onPressed: (){Navigator.of(context).pushNamed('/makePost');},
         label: Text("Post"),

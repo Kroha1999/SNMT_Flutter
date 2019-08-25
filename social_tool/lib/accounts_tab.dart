@@ -21,9 +21,11 @@ class AccountsListView extends StatefulWidget {
 
 class AccountsListViewState extends State<AccountsListView> {
   
+  
   static List<AccountListEl> accounts = [AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",)];
 
-  void addAccountToList(name,nick,social,lan,img){
+
+  void addAccountToList(uid,name,nick,social,lan,img){
     setState(() {
      accounts.add(new AccountListEl(name,nick,social,lan,imageurl:img)); 
     });
@@ -43,6 +45,7 @@ class AccountsListViewState extends State<AccountsListView> {
 
 class AccountListEl extends StatelessWidget {
   String _url;
+  
   final String _accountName;
   final String _accountNick;
   final String _socialNetwork;
@@ -51,12 +54,12 @@ class AccountListEl extends StatelessWidget {
   static final String _instImg = "https://en.instagram-brand.com/wp-content/uploads/2016/11/Glyph-Icon-hero.png";
   static final String _faceImg = "https://wrm5sysfkg-flywheel.netdna-ssl.com/wp-content/uploads/2016/04/official-facebook-logo-slide.jpg";
   static final String _twitImg = "https://pbs.twimg.com/profile_images/1111729635610382336/_65QFl7B.png";
-  String _socImg;
+  
 
   static final _instaGrad = [const Color(0xFF915FB5), const Color(0xFFCA436B)];
   static final _twitGrad = [ const Color(0xFF20cecd),const Color(0xFF0181cc)];
   static final _faceGrad = [const Color(0xFF428bc0), const Color(0xFF095b97)];
-  List<Color> _socGrad;
+  
 
 
   AccountListEl(this._accountName,this._accountNick,this._socialNetwork,this._accountLan,{String imageurl}){
@@ -70,6 +73,10 @@ class AccountListEl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    String _socImg;
+    List<Color> _socGrad;
+
     if(_socialNetwork == "Instagram"){
       _socImg = _instImg;
       _socGrad =_instaGrad;
