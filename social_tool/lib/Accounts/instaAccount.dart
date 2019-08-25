@@ -20,7 +20,7 @@ class AccountData{
 
 
 
-  //Serializing object to json
+  //Deserializing object from json
   AccountData.fromJson(Map<String, dynamic> json)
       : _socialNetwork = json['soc'],
         _nickName = json['nick'],
@@ -28,7 +28,20 @@ class AccountData{
         _imgUrl = json['img'],
         _lang = json['lang'],
         _uid = json['uid'];
-  //DeSerializing object from json
+
+  static AccountData newAccFromJson(Map<String, dynamic> json){
+    var acc = AccountData(json['soc']);
+    acc._nickName = json['nick'];
+    acc._fullName = json['fullName'];
+    acc._imgUrl = json['img'];
+    acc._lang = json['lang'];
+    acc._uid = json['uid'];
+    //updating data (in case something was changed[img,name,...,etc])
+    acc.updateData(acc._uid);
+    return acc;
+  }
+
+  //Serializing object to json
   Map<String, dynamic> toJson() => {
     'soc' : _socialNetwork,
     'nick' : _nickName,
@@ -40,7 +53,7 @@ class AccountData{
 
 
 
-  //FUNCTIONS 
+  //FUNCTIONS --------------------------------------------------------------------------
   //Auth request and responce 
   Future<String> auth(nick,password,lan) async {
     this._lang = lan;
@@ -50,9 +63,8 @@ class AccountData{
   }
 
   //reauth from uid
-  Future<String> reAuth(uid) async {
-    this._lang = "reauth";
-    print("Logging In");
+  Future<String> updateData(uid) async {
+    print("Updating Data");
     var resp = await http.get(url+"/instagram/login/"+uid).then(_processResponce);
     return resp;
   }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:social_tool/Accounts/instaAccount.dart";
@@ -6,7 +8,7 @@ import 'package:social_tool/accounts_tab.dart';
 class DataController{
   
   static String lang;
-  static List<String> accountsKeys = []; // key: uid - represents curent accounts
+  static List<String> accountsStrings = []; // key: uid - represents curent accounts
   static List<AccountData> accountsDataInstances = [];
   //static List<AccountListEl> accountsViewInstances = [];
 
@@ -23,41 +25,46 @@ class DataController{
   //Save accounts uids to local memory
   static void saveAccountsInstanses() async {
     var pref =  await SharedPreferences.getInstance();
-    DataController.accountsKeys.forEach((f)=>print(f));
-    pref.setStringList("accounts", DataController.accountsKeys);
+    List<String> stringAccs = [];
+    
+    DataController.accountsDataInstances.forEach((acc){
+      var accstr = jsonEncode(acc);
+      print(accstr);
+      DataController.accountsStrings.add(accstr);
+      stringAccs.add(accstr);
+    });
+
+    pref.setStringList("accountsInstances", stringAccs);
   }
 
-  //Get Account from local memory and assighn View
+  //Get Account from local memory to accountsDataInstances and assighn View (with update params)
   static void getAccounts() async {
     var pref =  await SharedPreferences.getInstance();
     //pref.remove("accounts");  //Cleaning account FOR TESTING
-    var keysFromStorage = pref.getStringList("accounts");
+    var accsFromStorage = pref.getStringList("accountsInstances");
     
-    //check if empty
-    if (keysFromStorage == null)
+    if (accsFromStorage == null)
     {
       print("NULL");
       DataController.saveAccountsInstanses(); 
       return;
     }
 
-    print("STORED: $keysFromStorage,");
-    var k = DataController.accountsKeys;
+    print("STORED: $accsFromStorage,");
+    var k = DataController.accountsStrings ;
     print("Cached: $k,");
-    //Comparing Stored Data and that which we can see on the screen
-    keysFromStorage.forEach((uid){
-      if(!DataController.accountsKeys.contains(uid)){
-        print(uid);
-        DataController.accountsKeys.add(uid);
-        var soc = uid.substring(0,4);
-        //looking for type of social in order to work with proper account
-        var social = (soc == 'inst') ? 'Instagram': ((soc == 'twit') ? 'Twitter': "Facebook");
-        var acc = AccountData("Instagram");
-        acc.reAuth(uid); 
+
+    accsFromStorage.forEach((accData){
+      if(!DataController.accountsStrings.contains(accData)){
+        print(accData);
+        DataController.accountsStrings.add(accData);
+        var accDataEncoded = jsonDecode(accData);
+        var restoredAcc = AccountData.newAccFromJson(accDataEncoded);
+        DataController.accountsDataInstances.add(restoredAcc);
       }
     });
-  }
 
+  }
   //------------------------------VIEW---------------------------------------------
   //In Accounts tab
   static void createAccView(fullName,nickName,socialNetwork,lang,imgUrl)

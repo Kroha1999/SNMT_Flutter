@@ -146,8 +146,8 @@ class AddInsta extends StatelessWidget {
     String resp = await acc.auth(nick,pass,lang);
     DataController.showMessage(context, resp.trimRight());
     if(resp == 'Success'){
-      DataController.accountsKeys.add(acc.getKey());
-
+      //SAVING ACCOUNTS TEST
+      DataController.accountsDataInstances.add(acc);
       await DataController.saveAccountsInstanses();
       Navigator.of(context).pop();
     }
