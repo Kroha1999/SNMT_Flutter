@@ -28,6 +28,7 @@ def auth(username,password):
       uid = str(uuid.uuid4())
       #cahing in order to use during this session of server side
       #cahcing just api variable 
+      
       user_cache[uid] = Client(str(username),str(password))#,cookie=user_cook['df8a7cbf-6528-4fff-a7e4-64b3cd53cbcb'])
       info = user_cache[uid].user_info(user_cache[uid].authenticated_params['_uid'])
 

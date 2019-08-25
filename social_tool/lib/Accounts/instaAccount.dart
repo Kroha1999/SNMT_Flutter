@@ -16,7 +16,24 @@ class AccountData{
   String _uid;
 
   AccountData(this._socialNetwork);
-
+  
+  //GETTERS AND SETTERS
+  String getSocial(){
+    return this._socialNetwork;
+  }
+  String getNick(){
+    return this._nickName;
+  }
+  String getImg(){
+    return this._imgUrl;
+  }
+  String getLang(){
+    return this._lang;
+  }
+  String getID(){
+    return this._uid;
+  }
+  
 
 
 
@@ -62,7 +79,7 @@ class AccountData{
     return resp;
   }
 
-  //reauth from uid
+  //updateAccountData by uid
   Future<String> updateData(uid) async {
     print("Updating Data");
     var resp = await http.get(url+"/instagram/login/"+uid).then(_processResponce);
@@ -103,15 +120,7 @@ class AccountData{
     }
 
   }
-  
-  
-  String getKey()
-  {
-    return _uid;
-  }
-  
-  
-  void selfUpdate(){}
+
   void postAPhoto(){}
 
 }

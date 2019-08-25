@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'package:social_tool/Data/dataController.dart';
+import 'package:social_tool/Data/globalVals.dart';
+
 class AccountsTab extends StatelessWidget {
   
   @override
@@ -51,20 +54,10 @@ class AccountListEl extends StatelessWidget {
   final String _socialNetwork;
   final String _accountLan;
 
-  static final String _instImg = "https://en.instagram-brand.com/wp-content/uploads/2016/11/Glyph-Icon-hero.png";
-  static final String _faceImg = "https://wrm5sysfkg-flywheel.netdna-ssl.com/wp-content/uploads/2016/04/official-facebook-logo-slide.jpg";
-  static final String _twitImg = "https://pbs.twimg.com/profile_images/1111729635610382336/_65QFl7B.png";
-  
-
-  static final _instaGrad = [const Color(0xFF915FB5), const Color(0xFFCA436B)];
-  static final _twitGrad = [ const Color(0xFF20cecd),const Color(0xFF0181cc)];
-  static final _faceGrad = [const Color(0xFF428bc0), const Color(0xFF095b97)];
-  
-
 
   AccountListEl(this._accountName,this._accountNick,this._socialNetwork,this._accountLan,{String imageurl}){
     if(imageurl == null || imageurl == ''){
-      _url = "https://member.imagineacademy.microsoft.com/sites/all/themes/custom/ita_members/images/microsoft-img.png";
+      _url = Globals.standartImg;
       }
     else{
       _url = imageurl;
@@ -78,16 +71,14 @@ class AccountListEl extends StatelessWidget {
     List<Color> _socGrad;
 
     if(_socialNetwork == "Instagram"){
-      _socImg = _instImg;
-      _socGrad =_instaGrad;
+      _socImg = Globals.instImg;
+      _socGrad = Globals.instaGrad;
     }else if(_socialNetwork == "Twitter"){
-      _socImg = _twitImg;
-      _socGrad =_twitGrad;
+      _socImg = Globals.twitImg;
+      _socGrad =Globals.twitGrad;
     }else if(_socialNetwork == "Facebook"){
-      _socImg = _faceImg;
-      _socGrad =_faceGrad;
-    }else{
-      
+      _socImg = Globals.faceImg;
+      _socGrad =Globals.faceGrad;
     }
 
 

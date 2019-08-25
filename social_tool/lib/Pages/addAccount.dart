@@ -1,10 +1,11 @@
 import "package:flutter/material.dart";
 import "package:social_tool/Accounts/instaAccount.dart";
 import "package:social_tool/Data/dataController.dart";
+import 'package:social_tool/Data/globalVals.dart';
 
 class AddAccountPage extends StatelessWidget {
 
-  final Color _interfaceCol = Colors.deepPurple;
+  final Color _interfaceCol = Globals.interfaceCol;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,8 @@ class AccChooserState extends State<AccChooser> {
                       color: Colors.white,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage( "https://en.instagram-brand.com/wp-content/uploads/2016/11/Glyph-Icon-hero.png")
+                        image: NetworkImage(Globals.instImg
+                        )
                       )
                     ),
                 ),
@@ -78,7 +80,7 @@ class AccChooserState extends State<AccChooser> {
               decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               gradient: LinearGradient(
-                colors:  [const Color(0xFF915FB5), const Color(0xFFCA436B)],
+                colors:  Globals.instaGrad,
                 ),
               ),
             ),
@@ -103,7 +105,7 @@ class AccChooserState extends State<AccChooser> {
                       color: Colors.white,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage("https://pbs.twimg.com/profile_images/1111729635610382336/_65QFl7B.png")
+                        image: NetworkImage(Globals.twitImg)
                       )
                     ),
                 ),
@@ -115,7 +117,7 @@ class AccChooserState extends State<AccChooser> {
               decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               gradient: LinearGradient(
-                colors:  [ const Color(0xFF20cecd),const Color(0xFF0181cc)],
+                colors:  Globals.twitGrad,
                 ),
               ),
             ),
@@ -148,10 +150,12 @@ class AddInsta extends StatelessWidget {
     if(resp == 'Success'){
       //SAVING ACCOUNTS TEST
       DataController.accountsDataInstances.add(acc);
-      await DataController.saveAccountsInstanses();
+      DataController.saveAccountsInstanses();
       Navigator.of(context).pop();
     }
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +166,7 @@ class AddInsta extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         gradient: LinearGradient(
-          colors:  [const Color(0xFF915FB5), const Color(0xFFCA436B)],
+          colors:  Globals.instaGrad,
           ),
         ),
 
@@ -241,6 +245,8 @@ class AddInsta extends StatelessWidget {
                 DataController.showMessage(context, "Please enter password");
               }else if(lang == null || lang == "Choose prior language"){
                 DataController.showMessage(context, "Please choose your language");
+              }else if (DataController.checkIfLogged(nick,"Instagram")){
+                DataController.showMessage(context, "You are already logged in");
               }else{
                 logIn(nick, pass, lang, context);
               }

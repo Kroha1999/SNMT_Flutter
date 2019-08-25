@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:social_tool/Accounts/instaAccount.dart";
-import 'package:social_tool/accounts_tab.dart';
+import 'package:social_tool/MainPage/accounts_tab.dart';
 
 class DataController{
   
@@ -50,9 +50,9 @@ class DataController{
       return;
     }
 
-    print("STORED: $accsFromStorage,");
-    var k = DataController.accountsStrings ;
-    print("Cached: $k,");
+    //print("STORED: $accsFromStorage,");
+    //var showedStrings = DataController.accountsStrings ;
+    //print("Cached: $showedStrings,");
 
     accsFromStorage.forEach((accData){
       if(!DataController.accountsStrings.contains(accData)){
@@ -63,8 +63,22 @@ class DataController{
         DataController.accountsDataInstances.add(restoredAcc);
       }
     });
-
   }
+
+  //Check if this nick is logged into accounts
+  static bool checkIfLogged(nick,soc){
+    bool isSame = false;
+    DataController.accountsDataInstances.forEach((acc){
+      if(acc.getSocial() == soc && acc.getNick()==nick){
+        isSame = true;
+        return;
+      }
+    });
+    return isSame;
+  }
+
+
+
   //------------------------------VIEW---------------------------------------------
   //In Accounts tab
   static void createAccView(fullName,nickName,socialNetwork,lang,imgUrl)
