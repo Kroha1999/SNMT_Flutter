@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 
 import 'package:social_tool/Data/globalVals.dart';
 
@@ -25,14 +26,8 @@ class AccountsListView extends StatefulWidget {
 class AccountsListViewState extends State<AccountsListView> {
   
   
-  static List<AccountListEl> accounts = [AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",imageurl: "https://bit.ly/2MunTk6",)];
+  static List<AccountListEl> accounts = [AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",'12345678',imageurl: "https://bit.ly/2MunTk6",)];
 
-
-  void addAccountToList(uid,name,nick,social,lan,img){
-    setState(() {
-     accounts.add(new AccountListEl(name,nick,social,lan,imageurl:img)); 
-    });
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -49,13 +44,14 @@ class AccountsListViewState extends State<AccountsListView> {
 class AccountListEl extends StatelessWidget {
   String _url;
   
+  final String _uid;
   final String _accountName;
   final String _accountNick;
   final String _socialNetwork;
   final String _accountLan;
 
 
-  AccountListEl(this._accountName,this._accountNick,this._socialNetwork,this._accountLan,{String imageurl}){
+  AccountListEl(this._accountName,this._accountNick,this._socialNetwork,this._accountLan,this._uid,{String imageurl}){
     if(imageurl == null || imageurl == ''){
       _url = Globals.standartImg;
       }
@@ -99,7 +95,11 @@ class AccountListEl extends StatelessWidget {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(_url)
+                  image: AdvancedNetworkImage(
+                      _url,
+                      useDiskCache: true,
+                      cacheRule: CacheRule(maxAge: const Duration(days: 10))
+                    ),//NetworkImage(_url)
                 ),
               ),
               
@@ -113,7 +113,11 @@ class AccountListEl extends StatelessWidget {
                   color: Colors.white,
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(_socImg)
+                    image: AdvancedNetworkImage(
+                      _socImg,
+                      useDiskCache: true,
+                      cacheRule: CacheRule(maxAge: const Duration(days: 10))
+                    ),//NetworkImage(_socImg)
                   )
                 ),
               ),

@@ -105,6 +105,7 @@ class AccountData{
           this._nickName, 
           this._socialNetwork, 
           this._lang, 
+          this._uid,
           this._imgUrl
         );
         return "Success";

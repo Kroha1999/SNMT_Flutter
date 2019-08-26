@@ -7,7 +7,7 @@ import 'package:social_tool/MainPage/accounts_tab.dart';
 
 class DataController{
   
-  static String lang;
+  static String chosenlang;
   static List<String> accountsStrings = []; // key: uid - represents curent accounts
   static List<AccountData> accountsDataInstances = [];
   //static List<AccountListEl> accountsViewInstances = [];
@@ -40,7 +40,7 @@ class DataController{
   //Get Account from local memory to accountsDataInstances and assighn View (with update params)
   static void getAccounts() async {
     var pref =  await SharedPreferences.getInstance();
-    //pref.remove("accounts");  //Cleaning account FOR TESTING
+    //pref.remove("accountsInstances");  //Cleaning account FOR TESTING
     var accsFromStorage = pref.getStringList("accountsInstances");
     
     if (accsFromStorage == null)
@@ -81,7 +81,7 @@ class DataController{
 
   //------------------------------VIEW---------------------------------------------
   //In Accounts tab
-  static void createAccView(fullName,nickName,socialNetwork,lang,imgUrl)
+  static void createAccView(fullName,nickName,socialNetwork,lang,uid,imgUrl)
   {
     
     AccountsListViewState.accounts.add(AccountListEl(
@@ -89,6 +89,7 @@ class DataController{
             nickName,
             socialNetwork,
             lang,
+            uid,
             imageurl: imgUrl,
             ));
 

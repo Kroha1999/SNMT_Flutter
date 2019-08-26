@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:simple_animations/simple_animations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:social_tool/Data/dataController.dart';
 import 'package:social_tool/MainPage/mainScreen.dart';
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
           )),
           Positioned.fill(
             child: Center( 
-              child:Icon(Icons.supervised_user_circle,size: 100,color: Colors.white,) ,//Text("SNMT",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 30.0),),
+              child:SpinKitCircle(color: Colors.white,duration: Duration(seconds: 1,milliseconds: 200),size: 30,),//Icon(Icons.supervised_user_circle,size: 100,color: Colors.white,) ,//Text("SNMT",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 30.0),),
             )
           ),
         ],
@@ -59,11 +60,10 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       );
 
-  /// In this example, we just simply delay 3 seconds, nothing complicated.
   Future initData() async {
     //REstoring Data with accounts
     DataController.getAccounts();
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(Duration(seconds: 3));
   }
 
   /// Navigate to Home screen.

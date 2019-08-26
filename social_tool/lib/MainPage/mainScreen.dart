@@ -79,7 +79,7 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
       ),
       
       floatingActionButton: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 100),
         child: fabOnTab(),
         transitionBuilder: (Widget child, Animation<double> animation){
           final scaleTween = TweenSequence([
@@ -116,6 +116,10 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
         icon: Icon(Icons.add,color: Globals.interfaceCol,),  
       );
       
+  }
+  
+  void navigateToPage(context,String pageRoute) async {
+
   }
 }
 
