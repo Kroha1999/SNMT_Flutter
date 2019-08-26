@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class Globals
 {
-  static const Color interfaceCol = Colors.deepPurple;
+  static const Color interfaceCol = Colors.white;
+  static const Color secondInterfaceCol = Colors.black;
+  static const Color backgroundCol = Color(0xFFf5f5f5);
 
 
   static const String instImg = "https://en.instagram-brand.com/wp-content/uploads/2016/11/Glyph-Icon-hero.png";

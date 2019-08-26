@@ -1,3 +1,4 @@
+// THIS PAGE INITIALIZE ROUTES FOR THE APP
 
 import 'package:flutter/material.dart';
 //Splash screen
@@ -11,7 +12,7 @@ import 'Pages/account.dart' as myAcc;
 import 'Pages/addAccount.dart' as addAcc;
 import 'Pages/makePost.dart' as makePost;
 import 'Pages/post.dart' as myPost;
-import 'Pages/MySettings.dart' as mySet;
+import 'Pages/mySettings.dart' as mySet;
 
 
 void main() => runApp(MyApp());

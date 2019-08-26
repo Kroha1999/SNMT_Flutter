@@ -1,15 +1,15 @@
 import "package:flutter/material.dart";
+import 'package:social_tool/Data/globalVals.dart';
 
 
 class MakePost extends StatelessWidget {
 
-  final Color _interfaceCol = Colors.deepPurple;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Make a Post"), backgroundColor: _interfaceCol ,),
+      appBar: AppBar(title: Text("Make a Post",style: TextStyle(color: Globals.secondInterfaceCol),),iconTheme: IconThemeData(color: Globals.secondInterfaceCol), backgroundColor:  Globals.interfaceCol ,),
       body: Container(
+        color: Globals.backgroundCol,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -18,8 +18,6 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
 
   TabController _tabController;
   ScrollController _scrollController;
-
-  final Color _interfaceCol = Globals.interfaceCol;
   
   @override
   void initState(){
@@ -45,15 +43,15 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
         headerSliverBuilder: (BuildContext context,bool innerBoxIsScrolled){
           return <Widget>[
             SliverAppBar(
-              title: Text("SNM Tool"),
-              backgroundColor: _interfaceCol,
+              title: Text("SNM Tool",style: TextStyle(color: Globals.secondInterfaceCol),),
+              backgroundColor:  Globals.interfaceCol,
               pinned: true,
               floating: true,
               forceElevated: innerBoxIsScrolled,
 
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.settings),
+                  icon: Icon(Icons.settings,color: Globals.secondInterfaceCol,),
                   onPressed: (){
                     Navigator.of(context).pushNamed('/settings');
                     },
@@ -61,11 +59,11 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
               ],
               
               bottom: TabBar(
-                indicatorColor: Colors.white,
+                indicatorColor: Globals.secondInterfaceCol,
                 controller: _tabController,
                 tabs: <Widget>[
-                  Tab(icon: Icon(Icons.supervised_user_circle),),
-                  Tab(icon: Icon(Icons.send),),
+                  Tab(icon: Icon(Icons.supervised_user_circle,color: Globals.secondInterfaceCol,),),
+                  Tab(icon: Icon(Icons.send,color: Globals.secondInterfaceCol,),),
                 ],
               ),
             )
@@ -82,7 +80,7 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
       
       floatingActionButton: AnimatedSwitcher(
         duration: Duration(milliseconds: 200),
-        child: _FABonTab(),
+        child: fabOnTab(),
         transitionBuilder: (Widget child, Animation<double> animation){
           final scaleTween = TweenSequence([
             TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.1),weight: 1),
@@ -99,23 +97,23 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _FABonTab(){
+  Widget fabOnTab(){
     return _tabController.index == 0
       ? FloatingActionButton.extended(
         heroTag: 'btn1',
         key: UniqueKey(),
         onPressed: (){Navigator.of(context).pushNamed('/addAccountPage');},
-        backgroundColor: _interfaceCol,
-        icon: Icon(Icons.add),
-        label: Text("Account"),
+        backgroundColor: Globals.secondInterfaceCol,
+        icon: Icon(Icons.add,color: Globals.interfaceCol,),
+        label: Text("Account",style: TextStyle(color: Globals.interfaceCol,)),
         )
       : FloatingActionButton.extended(
         heroTag: 'btn2',
         key: UniqueKey(),
         onPressed: (){Navigator.of(context).pushNamed('/makePost');},
-        label: Text("Post"),
-        backgroundColor: _interfaceCol,
-        icon: Icon(Icons.add),  
+        label: Text("Post",style: TextStyle(color: Globals.interfaceCol,),),
+        backgroundColor: Globals.secondInterfaceCol,
+        icon: Icon(Icons.add,color: Globals.interfaceCol,),  
       );
       
   }

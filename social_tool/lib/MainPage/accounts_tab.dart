@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:social_tool/Data/dataController.dart';
 import 'package:social_tool/Data/globalVals.dart';
 
 class AccountsTab extends StatelessWidget {
@@ -9,6 +8,7 @@ class AccountsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Globals.backgroundCol,
       child: Center(
         child: AccountsListView()
       ),
