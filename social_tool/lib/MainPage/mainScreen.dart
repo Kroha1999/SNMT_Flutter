@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:social_tool/Data/globalVals.dart';
+import 'package:rect_getter/rect_getter.dart';
 
 //Tabs
 import 'accounts_tab.dart' as accTab;
@@ -110,17 +111,15 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
       : FloatingActionButton.extended(
         heroTag: 'btn2',
         key: UniqueKey(),
-        onPressed: (){Navigator.of(context).pushNamed('/makePost');},
+        onPressed:(){Navigator.of(context).pushNamed('/makePost');},
         label: Text("Post",style: TextStyle(color: Globals.interfaceCol,),),
         backgroundColor: Globals.secondInterfaceCol,
         icon: Icon(Icons.add,color: Globals.interfaceCol,),  
       );
       
   }
-  
-  void navigateToPage(context,String pageRoute) async {
 
-  }
+
 }
 
   

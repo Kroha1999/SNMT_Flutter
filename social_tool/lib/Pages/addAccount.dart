@@ -10,7 +10,10 @@ class AddAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add Account",style: TextStyle(color: Globals.secondInterfaceCol),),iconTheme: IconThemeData(color: Globals.secondInterfaceCol), backgroundColor:  Globals.interfaceCol ,),
+      appBar: AppBar(
+        title: Text("Add Account",style: TextStyle(color: Globals.secondInterfaceCol),),
+        iconTheme: IconThemeData(color: Globals.secondInterfaceCol), 
+        backgroundColor: Globals.interfaceCol ,),
       body: Container(
         color: Globals.backgroundCol,
         child: Center(
@@ -141,8 +144,8 @@ class AddInsta extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.all(30.0),
                 padding: EdgeInsets.all(10.0),
-                width: 360.0,
-                height: 430.0,
+                width: MediaQuery.of(context).size.width-60,
+                height: MediaQuery.of(context).size.height-150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
                   gradient: LinearGradient(
@@ -155,6 +158,7 @@ class AddInsta extends StatelessWidget {
                     //Nickname
                     Container(
                       height: 43,
+                      width: MediaQuery.of(context).size.width - 80,
                       margin: EdgeInsets.all(5.0),
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),//EdgeInsets.all(2.0),
                       decoration: BoxDecoration(
@@ -174,6 +178,7 @@ class AddInsta extends StatelessWidget {
                     //Password
                     Container(
                       height: 43,
+                      width: MediaQuery.of(context).size.width - 80,
                       margin: EdgeInsets.all(5.0),
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                       decoration: BoxDecoration(
@@ -193,9 +198,9 @@ class AddInsta extends StatelessWidget {
                     //Language choose
                     Container(
                       height: 43,
+                      width: MediaQuery.of(context).size.width - 80,
                       margin: EdgeInsets.all(5.0),
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      width: 295,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.white,
@@ -272,7 +277,7 @@ class _SubmitBtnState extends State<SubmitBtn> {
       child: Container(
         margin: EdgeInsets.all(5.0),
         padding: EdgeInsets.all(10.0),
-        width: 295,
+        width: MediaQuery.of(context).size.width - 80,
         height: 43,
         decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -288,7 +293,7 @@ class _SubmitBtnState extends State<SubmitBtn> {
       child: Container(
         margin: EdgeInsets.all(5.0),
         padding: EdgeInsets.all(10.0),
-        width: 295,
+        width: MediaQuery.of(context).size.width - 80,
         decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         color: Colors.white,
