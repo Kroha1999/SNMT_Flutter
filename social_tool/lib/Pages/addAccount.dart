@@ -348,24 +348,27 @@ class _LangMenuState extends State<LangMenu> {
       height: 44,
       padding: EdgeInsets.all(0),
       margin: EdgeInsets.all(0),
-      child: DropdownButton<String>(
-        hint: Text("Choose prior language"),
-        items: _dropDownItems.map((String dropDownStringItem){
-          return DropdownMenuItem<String>(
-            value: dropDownStringItem,
-            child: Text(dropDownStringItem),
-          );
-        }
-        ).toList(),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true,
+          hint: Text("Choose prior language"),
+          items: _dropDownItems.map((String dropDownStringItem){
+            return DropdownMenuItem<String>(
+              value: dropDownStringItem,
+              child: Text(dropDownStringItem),
+            );
+          }
+          ).toList(),
 
-        onChanged: (String newValue){
-          setState(() {
-            this._curentVal = newValue;    
-            DataController.chosenlang = newValue;
-          });
-        },
+          onChanged: (String newValue){
+            setState(() {
+              this._curentVal = newValue;    
+              DataController.chosenlang = newValue;
+            });
+          },
 
-        value: _curentVal,
+          value: _curentVal,
+        ),
       ),
     );
   }

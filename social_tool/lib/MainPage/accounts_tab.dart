@@ -25,10 +25,7 @@ class AccountsListView extends StatefulWidget {
 }
 
 class AccountsListViewState extends State<AccountsListView> {
-  
-  
 
-  
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -41,15 +38,25 @@ class AccountsListViewState extends State<AccountsListView> {
 
 
 
-class AccountListEl extends StatelessWidget {
+class AccountListEl extends StatefulWidget {
   String _url;
   
   final String _uid;
-  final String _accountName;
-  final String _accountNick;
+  String _accountName;
+  String _accountNick;
   final String _socialNetwork;
-  final String _accountLan;
+  String _accountLan;
+  
+  void updateView({String accountName, String accountNick, String accountLan,String url}){
+    if(accountName !=null){this._accountName = accountName;}
+    if(accountNick !=null){this._accountNick = accountNick;}
+    if(accountLan !=null){this._accountLan = accountLan;}
+    if(url !=null){this._url = url;}
+  }
 
+  String getID(){
+    return _uid;
+  }
 
   AccountListEl(this._accountName,this._accountNick,this._socialNetwork,this._accountLan,this._uid,{String imageurl}){
     if(imageurl == null || imageurl == ''){
@@ -60,9 +67,11 @@ class AccountListEl extends StatelessWidget {
     }
   }
 
-  String getID(){
-    return _uid;
-  }
+  @override
+  _AccountListElState createState() => _AccountListElState();
+}
+
+class _AccountListElState extends State<AccountListEl> {
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +79,13 @@ class AccountListEl extends StatelessWidget {
     String _socImg;
     List<Color> _socGrad;
 
-    if(_socialNetwork == "Instagram"){
+    if(widget._socialNetwork == "Instagram"){
       _socImg = Globals.instImg;
       _socGrad = Globals.instaGrad;
-    }else if(_socialNetwork == "Twitter"){
+    }else if(widget._socialNetwork == "Twitter"){
       _socImg = Globals.twitImg;
       _socGrad =Globals.twitGrad;
-    }else if(_socialNetwork == "Facebook"){
+    }else if(widget._socialNetwork == "Facebook"){
       _socImg = Globals.faceImg;
       _socGrad =Globals.faceGrad;
     }
@@ -84,11 +93,11 @@ class AccountListEl extends StatelessWidget {
 
     return GestureDetector(
       onTap: (){
-        DataController.getClickedAccount(_accountNick,_accountName,_uid,_url,_socGrad);
+        DataController.getClickedAccount(widget._accountNick,widget._accountName,widget._uid,widget._url,_socGrad);
         Navigator.of(context).pushNamed('/accountPage');
       },
       child:Hero(
-        tag: _uid,
+        tag: widget._uid,
         child: Container(
           margin: EdgeInsets.all(6.0),
           padding: EdgeInsets.all(15.0),
@@ -103,7 +112,7 @@ class AccountListEl extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: AdvancedNetworkImage(
-                        _url,
+                        widget._url,
                         useDiskCache: true,
                         cacheRule: CacheRule(maxAge: const Duration(days: 10))
                       ),//NetworkImage(_url)
@@ -139,8 +148,8 @@ class AccountListEl extends StatelessWidget {
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                        Text(_accountName,textAlign: TextAlign.left, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,),),
-                        Text(_accountNick,textAlign: TextAlign.left, style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic,),),
+                        Text(widget._accountName,textAlign: TextAlign.left, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,),),
+                        Text(widget._accountNick,textAlign: TextAlign.left, style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic,),),
                     ],
                 ),            
               )
@@ -149,7 +158,7 @@ class AccountListEl extends StatelessWidget {
             Positioned(
               top: 0,
               right: 0, 
-              child: Text(_accountLan,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,))         
+              child: Text(widget._accountLan,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,))         
             ),
           ],
         ),

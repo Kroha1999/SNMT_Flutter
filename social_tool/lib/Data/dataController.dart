@@ -12,7 +12,7 @@ class DataController{
   static String chosenlang;
   static List<String> accountsStrings = []; // key: uid - represents curent accounts
   static List<AccountData> accountsDataInstances = [];
-  static List<AccountListEl> accounts = [AccountListEl("Zoriana Bighun","@zorik","Instagram","EN",'12345678',imageurl: "https://bit.ly/2MunTk6",)];
+  static List<AccountListEl> accounts = [];
 
   //static List<AccountListEl> accountsViewInstances = [];
 
@@ -27,7 +27,18 @@ class DataController{
 
   //---------------------------DATA---------------------------------------
   //LOCAL DATA Save accounts uids to local memory
-  static void saveAccountsInstanses() async {
+  static void saveAccountsInstanses({AccountData accToReplace}) async {
+    //Changing Data instance in local memory
+    if(accToReplace!=null){
+      DataController.accountsDataInstances.forEach((acc){
+        if(acc.getID() == accToReplace.getID()){
+          acc = accToReplace;
+          return;
+        }
+      });
+    }
+    
+    
     var pref =  await SharedPreferences.getInstance();
     List<String> stringAccs = [];
     
@@ -69,8 +80,11 @@ class DataController{
     });
   }
 
-  static void removeAccount(context)
+  static void removeAccount(context,{String elementUID})
   {
+    if(elementUID == null || elementUID == ""){
+      elementUID = DataController.lastUid;
+    }
     // As this function can be called only from the account
     // We can use 'last' variables to delete right account 
     var remEl;
@@ -78,7 +92,7 @@ class DataController{
     DataController.accountsStrings.forEach((encStr){
       //decrypting of encrypted string
       var jsonStr = jsonDecode(encStr);
-      if(jsonStr['uid'] == DataController.lastUid)
+      if(jsonStr['uid'] == elementUID)
       {
         remEl = encStr;
         print("ACCOUNT STRING INSTANCE REMOVED");
@@ -89,28 +103,28 @@ class DataController{
 
     //REMOVE FROM DATA
     DataController.accountsDataInstances.forEach((acc){
-      if(acc.getID() == DataController.lastUid){
+      if(acc.getID() == elementUID){
         print("ACCOUNT DATA INSTANCE REMOVED");
         remEl = acc;
         return;
       }
     });
-    DataController.accounts.remove(remEl);
     DataController.accountsDataInstances.remove(remEl);
+    //REMOVE SAVED INSTANCE IN THE WEB
+    remEl.removeAccount();
 
     //REMOVE FROM VIEW
     DataController.accounts.forEach((acc){
-      if(acc.getID() == DataController.lastUid){
+      if(acc.getID() == elementUID){
         print("ACCOUNT DATA VIEW REMOVED");
         remEl = acc;
         return;
       }
     });
     DataController.accounts.remove(remEl);
-    //TODO: SAVE INSTANCES LOCALLY and GO TO MAIN SCREEN AFTER
-    //TODO: REMOVE SAVED INSTANCE IN THE WEB
-
-    Navigator.of(context).popAndPushNamed('/home');
+    
+    // SAVING INSTANCES LOCALLY
+    DataController.saveAccountsInstanses();    
   }
 
   //FOR LOG IN Check if this nick is logged into accounts
@@ -132,6 +146,8 @@ class DataController{
   static String lastSocImg;
   static String lastAccName;
   static String lastAccNick;
+  static AccountData lastAccInstance;
+
   
   static void getClickedAccount(String nick,String fullName,String uid, String imgUrl, grad){
     DataController.lastAccName = fullName;
@@ -139,9 +155,17 @@ class DataController{
     DataController.lastUid = uid;
     DataController.lastImgUrl = imgUrl;
     DataController.lastGrad = grad;
+    DataController.accountsDataInstances.forEach((acc){
+      if(acc.getID() == uid){
+        DataController.lastAccInstance = acc;
+        return;
+      }
+    });
     DataController.lastSocImg = (lastGrad == Globals.instaGrad)? Globals.instImg:
               ((lastGrad == Globals.twitGrad) ? Globals.twitGrad:Globals.faceGrad);
   }
+
+
 
 
   //------------------------------VIEW---------------------------------------------

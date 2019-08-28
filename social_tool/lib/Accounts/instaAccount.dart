@@ -15,6 +15,11 @@ class AccountData{
   String _lang;
   String _uid;
 
+  //INSTA
+  int _numberOfLikes;
+  int _numberOfComments;
+  Map<String, dynamic> _genInfoVar;
+
   AccountData(this._socialNetwork);
   
   //GETTERS AND SETTERS
@@ -30,10 +35,24 @@ class AccountData{
   String getLang(){
     return this._lang;
   }
+  void setLang(String lan){
+    this._lang = lan;
+  }
   String getID(){
     return this._uid;
   }
+
+  int getLikes(){
+    return this._numberOfLikes;
+  }
   
+  int getComments(){
+    return this._numberOfComments;
+  }
+  
+  Map<String, dynamic> getGenInfoVariable(){
+    return this._genInfoVar;
+  }
 
 
 
@@ -46,6 +65,7 @@ class AccountData{
         _lang = json['lang'],
         _uid = json['uid'];
 
+  //creating AccountData from json strings
   static AccountData newAccFromJson(Map<String, dynamic> json){
     var acc = AccountData(json['soc']);
     acc._nickName = json['nick'];
@@ -76,6 +96,8 @@ class AccountData{
     this._lang = lan;
     print("Logging In");
     var resp = await http.get(url+"/instagram/login/"+nick+"/"+password).then(_processResponce);
+    await getInfo();
+    await getGenInfo();
     return resp;
   }
 
@@ -83,14 +105,18 @@ class AccountData{
   Future<String> updateData(uid) async {
     print("Updating Data");
     var resp = await http.get(url+"/instagram/login/"+uid).then(_processResponce);
+    print("Updating Data");
+    await getInfo();
+    await getGenInfo();
     return resp;
   }
   
+  //_processResponce for auth and updateData funcs
   String _processResponce(http.Response response)  {
     print("RESP: "+response.statusCode.toString());
     if (response.statusCode == 200){
       
-      print(response.body);
+      //print(response.body);
 
       try{
         //on successful responce
@@ -108,18 +134,52 @@ class AccountData{
           this._uid,
           this._imgUrl
         );
+        print(this._nickName.toString() + " View SUCEESS");
         return "Success";
         
       } catch(e){
         return response.body;
       }
-      
     }
     else{
       print("ERROR: "+response.statusCode.toString()+": ERROR");
       return "Error";
     }
+  }
 
+  //updateAccountData by uid
+  void removeAccount({String uid}) async {
+    if(uid == null){
+      uid = _uid;
+    }
+
+    print("DELETING DATA FROM WEB");
+    await http.delete(url+"/remove/"+uid);
+  }
+  
+  Future<Map<String, dynamic>> getInfo({String uid})async{
+    if(uid == null){
+      uid = _uid;
+    }
+    //int numbOfLikes = 0;
+    http.Response response = await http.get(url+"/instagram/info/"+uid);
+    print(response.body);
+    Map<String, dynamic> val = jsonDecode(response.body);
+    this._numberOfComments = val['comments'];
+    this._numberOfLikes = val['likes'];
+    return val;
+  }
+
+  Future<Map<String, dynamic>> getGenInfo({String uid}) async
+  {
+    if(uid == null){
+      uid = _uid;
+    }
+    http.Response response = await http.get(url+"/instagram/genInfo/"+uid);
+    
+    Map<String, dynamic> val = jsonDecode(response.body);
+    this._genInfoVar = val['user'];
+    return val;
   }
 
   void postAPhoto(){}

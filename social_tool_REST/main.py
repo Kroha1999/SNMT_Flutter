@@ -12,6 +12,24 @@ app = fl.Flask(__name__)
 
 user_cache = {}
 
+#Returns client by uid if 
+def getUserByUID(uid):
+  global user_cache
+  
+  try:
+    if not (uid in user_cache.keys()):
+      
+      with open('cookies/cookie2', "rb") as f:
+        user_cook = pickle.load(f)
+      
+      user_cache[uid] = Client('user','pass',cookie=user_cook[uid])
+      return user_cache[uid]
+    
+    else:
+      return user_cache[uid]
+  except Exception as e:
+    return str(e)
+
 @app.route('/')
 def start():
     return "HELLO INFO"
@@ -31,6 +49,8 @@ def auth(username,password):
       
       user_cache[uid] = Client(str(username),str(password))#,cookie=user_cook['df8a7cbf-6528-4fff-a7e4-64b3cd53cbcb'])
       info = user_cache[uid].user_info(user_cache[uid].authenticated_params['_uid'])
+
+      #print(str(user_cache[uid].user_detail_info(user_cache[uid].authenticated_params['_uid'])), file=sys.stdout)
 
       user_info = {}
       user_info['fullName'] = info['user']['full_name']
@@ -54,15 +74,16 @@ def reAuth(uid):
     #cached apis
     global user_cache 
 
-    with open('cookies/cookie2', "rb") as f:
-        users_cook = pickle.load(f)
 
     try:
       if not (uid in user_cache.keys()):
 
+        with open('cookies/cookie2', "rb") as f:
+          user_cook = pickle.load(f)
+        
         print('not cahced uid', file=sys.stdout)
 
-        user_cache[uid] = Client('user','pass',cookie=users_cook[uid])
+        user_cache[uid] = Client('user','pass',cookie=user_cook[uid])
         info = user_cache[uid].user_info(user_cache[uid].authenticated_params['_uid'])
 
         user_info = {}
@@ -87,7 +108,60 @@ def reAuth(uid):
     except Exception as e:
       return fl.jsonify(str(e))
 
+@app.route('/remove/<uid>',methods=['DELETE'])
+def removeAcc(uid):
+  global user_cache 
 
+  with open('cookies/cookie2', "rb") as f:
+    user_cook = pickle.load(f)
+  
+
+  #Deleting from cache
+  print("Poped :"+str(user_cache.pop(uid)), file=sys.stdout)
+  #Deleting from storage
+  print("Poped :"+str(user_cook.pop(uid)), file=sys.stdout)
+  
+  #saving changes
+  with open('cookies/cookie2', "wb") as f:
+    pickle.dump(user_cook,f)
+
+  return "success"
+  
+
+@app.route('/instagram/info/<uid>')
+def getLikes(uid):
+  usr = getUserByUID(uid)
+  usrId = usr.authenticated_params['_uid']
+  
+  number_of_likes = 0
+  number_of_comments = 0
+
+  #Pagination implemented through 'next_max_id'
+  results = usr.user_feed(usrId)
+  next_max_id = -100
+  while next_max_id:
+    if(next_max_id == -100):
+      results = usr.user_feed(usrId)
+    else:
+      results = usr.user_feed(usrId, max_id=next_max_id)
+
+    data = results['items']
+    for x in data:
+      number_of_likes += x['like_count']
+      number_of_comments += x['comment_count']
+    next_max_id = results.get('next_max_id')
+
+  retVal = {
+    'likes':number_of_likes,
+    'comments':number_of_comments
+  }
+  return fl.jsonify(retVal)
+
+@app.route('/instagram/genInfo/<uid>')
+def getInfo(uid):
+  usr = getUserByUID(uid)
+  usrId = usr.authenticated_params['_uid']
+  return fl.jsonify(usr.user_info(usrId))
 
 if __name__ == '__main__':
     app.run()
