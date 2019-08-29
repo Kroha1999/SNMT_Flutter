@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import "package:social_tool/Accounts/instaAccount.dart";
+import "package:social_tool/Accounts/accountData.dart";
 import "package:social_tool/Data/dataController.dart";
 import 'package:social_tool/Data/globalVals.dart';
 
@@ -338,7 +338,6 @@ class LangMenu extends StatefulWidget {
 }
 
 class _LangMenuState extends State<LangMenu> {
-  var _dropDownItems = ["EN","DE","SC","AT","QW","RE","ZC",];
   var _curentVal = DataController.chosenlang;
 
 
@@ -352,7 +351,7 @@ class _LangMenuState extends State<LangMenu> {
         child: DropdownButton<String>(
           isExpanded: true,
           hint: Text("Choose prior language"),
-          items: _dropDownItems.map((String dropDownStringItem){
+          items: Globals.languages.map((String dropDownStringItem){
             return DropdownMenuItem<String>(
               value: dropDownStringItem,
               child: Text(dropDownStringItem),

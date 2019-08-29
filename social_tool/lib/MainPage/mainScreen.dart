@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:social_tool/Data/globalVals.dart';
-import 'package:rect_getter/rect_getter.dart';
 
 //Tabs
 import 'accounts_tab.dart' as accTab;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:social_tool/Data/customWidgets.dart';
 import 'package:social_tool/Data/dataController.dart';
 
 import 'package:social_tool/Data/globalVals.dart';
@@ -103,41 +104,7 @@ class _AccountListElState extends State<AccountListEl> {
           padding: EdgeInsets.all(15.0),
           child: Stack(children: <Widget>[
             Align(alignment: Alignment.centerLeft,
-            child: Container(
-                width: 60.0,
-                height: 60.0,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white,width: 2.0),
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AdvancedNetworkImage(
-                        widget._url,
-                        useDiskCache: true,
-                        cacheRule: CacheRule(maxAge: const Duration(days: 10))
-                      ),//NetworkImage(_url)
-                  ),
-                ),
-                
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  width: 23,
-                  height: 23,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white,width: 2.0),
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AdvancedNetworkImage(
-                        _socImg,
-                        useDiskCache: true,
-                        cacheRule: CacheRule(maxAge: const Duration(days: 10))
-                      ),//NetworkImage(_socImg)
-                    )
-                  ),
-                ),
-              ),
+            child: accAndSocialView(size: 60, imageUrl: widget._url, socImageUrl: _socImg,borderWidth: 2.0)
             ),
             
             Positioned(
@@ -165,6 +132,12 @@ class _AccountListElState extends State<AccountListEl> {
           
           width: 360.0,
           decoration: BoxDecoration(
+            /*boxShadow: [BoxShadow(
+              color: Colors.black,
+              offset: Offset(3.0,1.0),
+              blurRadius: 30.0,
+              spreadRadius: 1.0
+            )],*/ //SHADOW
             borderRadius: BorderRadius.circular(20.0),
             gradient: LinearGradient(
               colors: _socGrad,

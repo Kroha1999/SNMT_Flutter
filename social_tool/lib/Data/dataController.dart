@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import "package:social_tool/Accounts/instaAccount.dart";
+import "package:social_tool/Accounts/accountData.dart";
 import 'package:social_tool/MainPage/accounts_tab.dart';
+import 'package:social_tool/MainPage/posts_tab.dart';
 
 import 'globalVals.dart';
 
@@ -12,8 +13,15 @@ class DataController{
   static String chosenlang;
   static List<String> accountsStrings = []; // key: uid - represents curent accounts
   static List<AccountData> accountsDataInstances = [];
-  static List<AccountListEl> accounts = [];
-
+  static List<AccountListEl> accounts = [AccountListEl("Zorik","zik","Instagram",'English','12351234123',imageurl: Globals.standartImg,)];
+  static List<PostListEl> posts = [PostListEl(
+            description: Globals.textExample,
+            imgUrl: Globals.imgExample,
+            status: "Completed",
+            socials: [Globals.faceImg,Globals.instImg,Globals.twitImg],
+            accs: DataController.accountsDataInstances.map((acc){return acc.getImg();}).toList(), 
+            timeStamp: DateTime.now(),
+          ),];
   //static List<AccountListEl> accountsViewInstances = [];
 
   static void showMessage(var context,String text){
@@ -64,10 +72,6 @@ class DataController{
       DataController.saveAccountsInstanses(); 
       return;
     }
-
-    //print("STORED: $accsFromStorage,");
-    //var showedStrings = DataController.accountsStrings ;
-    //print("Cached: $showedStrings,");
 
     accsFromStorage.forEach((accData){
       if(!DataController.accountsStrings.contains(accData)){

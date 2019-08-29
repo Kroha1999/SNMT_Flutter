@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:social_tool/Data/dataController.dart';
-import 'package:social_tool/Data/dataController.dart' as prefix0;
 import 'package:social_tool/Data/globalVals.dart';
 
 enum ConfirmAction { CANCEL, ACCEPT }
@@ -71,7 +70,7 @@ class AccountPage extends StatelessWidget {
     if(DataController.lastGrad == Globals.instaGrad){
       return Container(
         padding: EdgeInsets.all(15.0),
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.fromLTRB(10.0, 5, 10.0, 5),
         width: MediaQuery.of(context).size.width,
         height: 70,
         decoration: BoxDecoration(
@@ -143,24 +142,16 @@ class AccountPage extends StatelessWidget {
                       child: ListView(children: <Widget>[
                         upBar(context),
                         //This ListView must be a custom object with analyze data (for Insta/Twit/Face separetly)
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
-                        Text("TEXT",style: TextStyle(fontSize: 50),),
+                        Container(
+                          padding: EdgeInsets.all(15.0),
+                          margin: EdgeInsets.fromLTRB(10.0, 5, 10.0, 5),
+                          width: MediaQuery.of(context).size.width - 20,
+                          height: 1000,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),//BorderRadius.circular(20.0),
+                            color: Globals.interfaceCol
+                          ),
+                        ),
                         deleteBar(context),
                       ],),
                     ),
@@ -353,7 +344,6 @@ class LangMenu extends StatefulWidget {
 }
 
 class _LangMenuState extends State<LangMenu> {
-  var _dropDownItems = ["EN","DE","SC","AT","QW","RE","ZC",];
   var _curentVal = DataController.lastAccInstance.getLang();
 
 
@@ -361,7 +351,7 @@ class _LangMenuState extends State<LangMenu> {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      width: 100,
+      width: 130,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
         color: Colors.white
@@ -376,7 +366,7 @@ class _LangMenuState extends State<LangMenu> {
           child: DropdownButton<String>(
             isExpanded: true,
             hint: Text("Choose prior language"),
-            items: _dropDownItems.map((String dropDownStringItem){
+            items: Globals.languages.map((String dropDownStringItem){
               return DropdownMenuItem<String>(
                 value: dropDownStringItem,
                 child: Text(dropDownStringItem, style: TextStyle(color: Colors.black),),
