@@ -43,36 +43,39 @@ class AccChooser extends StatelessWidget {
             //Go to Insta Page
             goNext(context,AddInsta());
           },
-          child: Container(
-            margin: EdgeInsets.all(6.0),
-            padding: EdgeInsets.all(10.0),
-            child: Row(children: <Widget>[
-              // INSTAGRAM icon
-              Container(
-                  width: 35,
-                  height: 35,
-                  margin: EdgeInsets.fromLTRB(5, 0, 80, 0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AdvancedNetworkImage(
-                        Globals.instImg,
-                        useDiskCache: true,
-                        cacheRule: CacheRule(maxAge: const Duration(days: 10))
-                      ),//NetworkImage(Globals.instImg)
-                    )
-                  ),
-              ),
-              //Text
-              Text("Instagram",style: TextStyle(color: Colors.white,fontSize: 20.0,fontWeight: FontWeight.bold),)
-            ],),
-            width: 360.0,
-            decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            gradient: LinearGradient(
-              colors:  Globals.instaGrad,
+          child: Hero(
+            tag: "InstagramAddAccount",
+            child: Container(
+              margin: EdgeInsets.all(6.0),
+              padding: EdgeInsets.all(10.0),
+              child: Row(children: <Widget>[
+                // INSTAGRAM icon
+                Container(
+                    width: 35,
+                    height: 35,
+                    margin: EdgeInsets.fromLTRB(5, 0, 80, 0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AdvancedNetworkImage(
+                          Globals.instImg,
+                          useDiskCache: true,
+                          cacheRule: CacheRule(maxAge: const Duration(days: 10))
+                        ),//NetworkImage(Globals.instImg)
+                      )
+                    ),
+                ),
+                //Text
+                Text("Instagram",style: TextStyle(color: Colors.white,fontSize: 20.0,fontWeight: FontWeight.bold),)
+              ],),
+              width: 360.0,
+              decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              gradient: LinearGradient(
+                colors:  Globals.instaGrad,
+                ),
               ),
             ),
           ),
@@ -141,75 +144,78 @@ class AddInsta extends StatelessWidget {
         builder: (context) => Center(
           child: Center(
             child: SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.all(30.0),
-                padding: EdgeInsets.all(10.0),
-                width: MediaQuery.of(context).size.width-60,
-                height: MediaQuery.of(context).size.height-150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  gradient: LinearGradient(
-                    colors:  Globals.instaGrad,
+              child: Hero(
+                tag: 'InstagramAddAccount',
+                child: Container(
+                  margin: EdgeInsets.all(30.0),
+                  padding: EdgeInsets.all(10.0),
+                  width: MediaQuery.of(context).size.width-60,
+                  height: MediaQuery.of(context).size.height-150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    gradient: LinearGradient(
+                      colors:  Globals.instaGrad,
+                      ),
                     ),
+
+                  child: Center(
+                    child: Column(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
+                      //Nickname
+                      Container(
+                        height: 43,
+                        width: MediaQuery.of(context).size.width - 80,
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),//EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                          ),
+
+                        child: TextField(
+                          controller: controllerNick,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Nickname",
+                          ),
+                        )
+                      ),
+
+                      //Password
+                      Container(
+                        height: 43,
+                        width: MediaQuery.of(context).size.width - 80,
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                          ),
+                        child: TextField(
+                          controller: controllerPass,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Password"
+                          ),
+                        )
+                      ),
+
+                      //Language choose
+                      Container(
+                        height: 43,
+                        width: MediaQuery.of(context).size.width - 80,
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                          ),
+                        child: LangMenu(),
+                      ),
+                      //Submit Button with Loading
+                      SubmitBtn(controllerNick: controllerNick,controllerPass: controllerPass,),
+                    ],)
                   ),
-
-                child: Center(
-                  child: Column(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
-                    //Nickname
-                    Container(
-                      height: 43,
-                      width: MediaQuery.of(context).size.width - 80,
-                      margin: EdgeInsets.all(5.0),
-                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),//EdgeInsets.all(2.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white,
-                        ),
-
-                      child: TextField(
-                        controller: controllerNick,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Nickname",
-                        ),
-                      )
-                    ),
-
-                    //Password
-                    Container(
-                      height: 43,
-                      width: MediaQuery.of(context).size.width - 80,
-                      margin: EdgeInsets.all(5.0),
-                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white,
-                        ),
-                      child: TextField(
-                        controller: controllerPass,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Password"
-                        ),
-                      )
-                    ),
-
-                    //Language choose
-                    Container(
-                      height: 43,
-                      width: MediaQuery.of(context).size.width - 80,
-                      margin: EdgeInsets.all(5.0),
-                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white,
-                        ),
-                      child: LangMenu(),
-                    ),
-                    //Submit Button with Loading
-                    SubmitBtn(controllerNick: controllerNick,controllerPass: controllerPass,),
-                  ],)
                 ),
               ),
             ),

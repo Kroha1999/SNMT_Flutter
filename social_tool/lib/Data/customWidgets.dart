@@ -33,14 +33,16 @@ Widget postAndSocialsView({double offset = 0.0,double size = 60,String imgUrl = 
                 ),
               ),
               //generation of social Views images from list
-              cirleImagesRow(contHeight: size,size: size/3,imgs: socImgs,borderColor: borderColor,borderWidth: 0.0,offset: offset)
+              Positioned(
+                bottom: 0,
+                child: cirleImagesRow(contHeight: size,size: size/3,imgs: socImgs,borderColor: borderColor,borderWidth: 0.0,offset: offset))
             ]),
           );
 }
 
 //Must be puted in Container or other widget to manipulate position
 Widget cirleImagesRow({double contHeight = 50,
-                      double size = 23, List<String> imgs = const[],
+                      double size = 23, List<String> imgs = const[Globals.faceImg,Globals.faceImg,Globals.faceImg,Globals.instImg,Globals.instImg, Globals.twitImg,],
                       Color borderColor = Colors.black,
                       double borderWidth = 1.0,offset = 0,int maxVisible = 4,})
 {
@@ -76,7 +78,8 @@ Widget cirleImagesRow({double contHeight = 50,
 
   
   return Container(
-    height: contHeight,
+    height: size,
+    width: size + maxVisible*size - (maxVisible-1)*size/2.5 ,
     child: Stack(
             children: finalList
           ),
@@ -85,7 +88,7 @@ Widget cirleImagesRow({double contHeight = 50,
 
 
 //Acount image + social under
-Widget accAndSocialView({double size = 60,Color borderColor = Colors.white,String imageUrl = Globals.standartImg, String socImageUrl, double borderWidth = 2.0})
+Widget accAndSocialView({double size = 60,Color borderColor = Colors.white,String imageUrl = Globals.standartImg, String socImageUrl = '', double borderWidth = 2.0})
 {
   return Container(
     width: size,

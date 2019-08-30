@@ -11,19 +11,19 @@ class PostsTab extends StatelessWidget {
     return Container(
       color: Globals.backgroundCol,
       child: Center(
-        child: postsListView()
+        child: PostsListView()
       ),
     );
   }
 }
 
 
-class postsListView extends StatefulWidget {
+class PostsListView extends StatefulWidget {
   @override
-  _postsListViewState createState() => _postsListViewState();
+  _PostsListViewState createState() => _PostsListViewState();
 }
 
-class _postsListViewState extends State<postsListView> {
+class _PostsListViewState extends State<PostsListView> {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -134,18 +134,19 @@ class _PostListElState extends State<PostListEl> {
                   ],
                 )
               ),
-              Align(
-                alignment: Alignment.bottomRight,
+              Positioned(
+                bottom: 0,
+                right:  0,
                 child: Container(
                   //ACCOUNTS IMAGES
                   child: cirleImagesRow(
-                    contHeight: 60,
+                    contHeight: 0,
                     size: 20,
                     imgs: widget._accs,
                     maxVisible: 4,
                     offset: 25
                     ),
-                  width: 95,
+                    width: 95,
                 ),
               )
             ],

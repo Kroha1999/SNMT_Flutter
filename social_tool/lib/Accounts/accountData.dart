@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import "package:social_tool/Data/dataController.dart";
+import 'package:social_tool/Data/globalVals.dart';
 
 String url = "http://10.0.3.2:5000";
 
@@ -26,8 +27,15 @@ class AccountData{
   String getSocial(){
     return this._socialNetwork;
   }
+  String getSocialUrl(){
+    return _socialNetwork == "Instagram" ? Globals.instImg:
+                        _socialNetwork == "Twitter"?Globals.twitImg:Globals.faceImg;
+  }
   String getNick(){
     return this._nickName;
+  }
+  String fullName(){
+    return this._fullName;
   }
   String getImg(){
     return this._imgUrl;

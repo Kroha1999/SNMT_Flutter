@@ -7,6 +7,8 @@ class Globals
   static const Color backgroundCol = Color(0xFFf5f5f5);
 
 
+
+
   static const String instImg = "https://en.instagram-brand.com/wp-content/uploads/2016/11/Glyph-Icon-hero.png";
   static const String faceImg = "https://wrm5sysfkg-flywheel.netdna-ssl.com/wp-content/uploads/2016/04/official-facebook-logo-slide.jpg";
   static const String twitImg = "https://pbs.twimg.com/profile_images/1111729635610382336/_65QFl7B.png";

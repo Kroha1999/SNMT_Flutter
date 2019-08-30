@@ -13,7 +13,7 @@ class DataController{
   static String chosenlang;
   static List<String> accountsStrings = []; // key: uid - represents curent accounts
   static List<AccountData> accountsDataInstances = [];
-  static List<AccountListEl> accounts = [AccountListEl("Zorik","zik","Instagram",'English','12351234123',imageurl: Globals.standartImg,)];
+  static List<AccountListEl> accounts = [/*AccountListEl("Zorik","zik","Instagram",'English','12351234123',imageurl: Globals.standartImg,)*/];
   static List<PostListEl> posts = [PostListEl(
             description: Globals.textExample,
             imgUrl: Globals.imgExample,
