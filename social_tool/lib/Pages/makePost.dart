@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import "package:flutter/material.dart";
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:social_tool/Accounts/accountData.dart';
 import 'package:social_tool/Data/customWidgets.dart';
+import 'package:social_tool/Data/customWidgetsPostMake.dart';
 import 'package:social_tool/Data/dataController.dart';
 import 'package:social_tool/Data/globalVals.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +14,17 @@ class MakePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Make a Post",style: TextStyle(color: Globals.secondInterfaceCol),),iconTheme: IconThemeData(color: Globals.secondInterfaceCol), backgroundColor:  Globals.interfaceCol ,),
+      appBar: AppBar(
+        title: Text("Make a Post",style: TextStyle(color: Globals.secondInterfaceCol),),iconTheme: IconThemeData(color: Globals.secondInterfaceCol), 
+        backgroundColor:  Globals.interfaceCol ,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info,color: Colors.black),
+            onPressed: null,
+            )
+        ],
+        ),
+
       body: Container(
         color: Globals.backgroundCol,
         child: Center(
@@ -179,8 +189,7 @@ class _MakePostBodyState extends State<MakePostBody> {
   List<bool> _isChecked = [true,false];  // photo = 0  lang = 1
   
   //Checkbox Check function
-  void onChecked(int id,bool value)
-  {
+  void onChecked(int id,bool value){
     setState(() {
       _isChecked[id] = value; 
     });
@@ -193,28 +202,10 @@ class _MakePostBodyState extends State<MakePostBody> {
   //Function to get image
   Future _getImage(source) async {
     File image = await ImagePicker.pickImage(source: source);
-    File cropped = await _cropImage(image);
+    File cropped = await cropImage(image);
     setState(() {
       _imageFile = cropped ?? _imageFile;
     });
-  }
-
-  //Croping function
-  Future<File> _cropImage(File imagefile) async {
-    if(imagefile!=null){
-      File cropped = await ImageCropper.cropImage(
-        sourcePath: imagefile.path,
-        ratioX: 1.0,
-        ratioY: 1.0,
-        maxWidth: 512,
-        maxHeight: 512,
-        toolbarColor: Globals.interfaceCol,
-        toolbarWidgetColor: Globals.secondInterfaceCol,
-        toolbarTitle: "Crop Wise"
-      );
-      return cropped;
-    }
-    return null;
   }
 
   //Choose photoView if checked
@@ -282,21 +273,54 @@ class _MakePostBodyState extends State<MakePostBody> {
   }
   
   //---------------------------------------------------------------StartText
-  List<String> startTexts = [];
+  
+  List<List<Widget>> additionalTextBtns = [];
 
-  Widget addStartText(){
-    return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      FlatButton(
-        color: Colors.green,
-        child: Text("+ add custom start text"),
-        onPressed: (){},
-        textColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),       
-      ),
-    ],);
+  Widget addAdditionalText(int position){
+
+    if(additionalTextBtns.isEmpty)
+      additionalTextBtns.add(new List<Widget>());
+      additionalTextBtns.add(new List<Widget>());
+
+    if(DataController.aditionalStringsData.isEmpty)
+      DataController.aditionalStringsData.add(new List<AdditionalString>());
+      DataController.aditionalStringsData.add(new List<AdditionalString>());
+
+    // 0 - start text position // 1 - end text position
+    String pos = (position == 0)?"start":"end";
+
+    additionalTextBtns[position] = [];
+    if(DataController.aditionalStringsData[position].isEmpty)
+      additionalTextBtns[position].add(textButton(text: "+ add custom $pos text",position: position,func: addStringView));
+    else{
+      DataController.aditionalStringsData[position].asMap().forEach((index, addStrObj){
+        additionalTextBtns[position].add(textButton(
+          position: position,
+          btnColor: null,
+          func: updateStringView,
+          text: (index+1).toString()+ ". " + addStrObj.str,
+          index: index // passing indexof View in order to know on which str we clicked
+          ));
+      });
+      additionalTextBtns[position].add(textButton(text: "+ add custom $pos text",position: position,func: addStringView));
+    }
+    return Container(
+      margin: EdgeInsets.all(5),
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: additionalTextBtns[position],
+    ));
+  }
+
+  void updateStringView(position,index){
+    String pos = position == 0? "start" : 'end'; 
+    showAlertDialog(context,position,"Update $pos string",widget.chosenAccs,index: index);
+  }
+
+  void addStringView(position,index){
+    String pos = (position == 0)? "start" : 'end'; 
+    showAlertDialog(context,position,"Add $pos string",widget.chosenAccs);
   }
 
   @override
@@ -312,14 +336,14 @@ class _MakePostBodyState extends State<MakePostBody> {
             Checkbox(checkColor: Colors.black,activeColor: Colors.white,value: _isChecked[1], onChanged: (bool value){onChecked(1,value);},),
             Container(
                   //ACCOUNTS IMAGES
-                  child: cirleImagesRow(
+                  child: circleImagesRow(
                     contHeight: 30,
                     size: 30,
                     maxVisible: 5,
                     imgs: widget.chosenAccs.map((acc){
                       return acc.getImg();
                       }).toList(),
-                    offset: 50
+                    offset: 55
                     ),
                   
                 ),
@@ -327,7 +351,30 @@ class _MakePostBodyState extends State<MakePostBody> {
         ),
         Divider(color: Globals.secondInterfaceCol, height: 5,),
         choosePhotoWidget(),
-        addStartText(),
+        Container(
+          child: TextField(
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              icon: Icon(Icons.text_fields,color: Colors.black,),
+              hintText: "Location",
+            ),
+            maxLines: 1,
+          ),
+        ),
+        Divider(color: Globals.secondInterfaceCol, height: 5,),
+        addAdditionalText(0),
+        Divider(color: Globals.secondInterfaceCol, height: 5,),
+        TextField(
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            icon: Icon(Icons.text_fields,color: Colors.black,),
+            labelText: 'Main text',
+          ),
+          maxLines: 7,
+          
+        ),
+        Divider(color: Globals.secondInterfaceCol, height: 5,),
+        addAdditionalText(1),
         Divider(color: Globals.secondInterfaceCol, height: 5,),
 
 
@@ -335,11 +382,127 @@ class _MakePostBodyState extends State<MakePostBody> {
       ],)
     );
   }
+  
+  //ShowAlert For Adding String
+  showAlertDialog(BuildContext context,int position,String title,List<AccountData> chosenAccs,{int index}) {
+  //Controller for additional string text field
+  TextEditingController addStringController = TextEditingController();
+  //BtnText
+  String addStrBtnText = "Add String";
+
+  //if this is not new string
+  if(index!=null){
+    DataController.addStringId = DataController.aditionalStringsData[position][index].typeOfAddString;
+    DataController.addLineText = DataController.aditionalStringsData[position][index].str;
+    if(DataController.addStringId == 1)
+      DataController.socialsChosen = DataController.aditionalStringsData[position][index].socials;
+    else if (DataController.addStringId == 2)
+      DataController.accsChosen = DataController.aditionalStringsData[position][index].accounts;
+
+    addStrBtnText =  "Change String";
+    addStringController.text = DataController.addLineText;
+  }
+
+  // set up the buttons
+  Widget cancelButton = FlatButton(
+    child: Text("Cancel"),
+    onPressed:  () {
+      DataController.defaultAddString();
+      Navigator.of(context).pop();
+      setState((){});
+      },
+  );
+
+  Widget deleteButton = FlatButton(
+    child: Text("Delete",style: TextStyle(color: Colors.red),),
+    onPressed:  () async {
+      bool areYouSure = await deleteDialog(context,"Are you sure?");
+      if(areYouSure){
+        DataController.aditionalStringsData[position].removeAt(index);
+        //deletionfunction
+        DataController.defaultAddString();
+        Navigator.of(context).pop();
+      }
+      setState((){});
+      },
+  );
+
+  Widget continueButton = FlatButton(
+    child: Text(addStrBtnText),
+    onPressed:  () {
+      //setting text to our static variable
+      DataController.addLineText = addStringController.text;
+      //check if everything is correctly entered
+      var result = checkIfPossibleToAdd();
+      if(result[0]){
+        //create object and pass info to view
+        //here we have to save our custom string
+        if(index!=null){
+          DataController.aditionalStringsData[position][index].typeOfAddString = DataController.addStringId;
+          DataController.aditionalStringsData[position][index].str =  DataController.addLineText;
+          //Restoring only needed data in order to avoid mistakes
+          DataController.aditionalStringsData[position][index].socials =  DataController.socialsChosen;
+          DataController.aditionalStringsData[position][index].accounts =  DataController.accsChosen;
+        }
+        else{
+          DataController.aditionalStringsData[position].add(
+            AdditionalString(
+              DataController.addStringId,
+              DataController.addLineText,
+              DataController.socialsChosen,
+              DataController.accsChosen
+              )
+          );
+        }
+        DataController.defaultAddString();
+        Navigator.of(context).pop();
+      }else{
+        print(result[1]);
+        warningDialog(context,result[1]);
+      }
+      setState(() { });
+    },
+  );
+  
+  List<Widget> btns = [cancelButton,continueButton];
+  if(index != null){
+    btns.add(deleteButton); 
+  }
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text(title),
+    content: Container(
+      child: Column(children: <Widget>[
+        Text("Here you can choose where this start string will be added to:"),
+        ChooseAddStringOption(chosenAccs,index,),
+        TextField(
+          controller: addStringController,
+          keyboardType: TextInputType.multiline,
+          maxLines: 5,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            hintText: "Write your start string here",
+            focusColor: Colors.black,
+            fillColor: Colors.black,
+            hoverColor: Colors.black
+          ),
+        )
+      ],)
+    ),
+    actions: btns,
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+  }
 }
 
-class startString{
-  final String str;
-  final List<String> socials;
-  final List<AccountData> accounts;
-  startString(this.str, this.socials, this.accounts);
-}
+
+
+

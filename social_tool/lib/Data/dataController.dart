@@ -3,17 +3,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:social_tool/Accounts/accountData.dart";
+import 'package:social_tool/Data/customWidgetsPostMake.dart';
 import 'package:social_tool/MainPage/accounts_tab.dart';
 import 'package:social_tool/MainPage/posts_tab.dart';
 
 import 'globalVals.dart';
 
 class DataController{
-  
+
+
+  //
   static String chosenlang;
   static List<String> accountsStrings = []; // key: uid - represents curent accounts
   static List<AccountData> accountsDataInstances = [];
   static List<AccountListEl> accounts = [/*AccountListEl("Zorik","zik","Instagram",'English','12351234123',imageurl: Globals.standartImg,)*/];
+  
   static List<PostListEl> posts = [PostListEl(
             description: Globals.textExample,
             imgUrl: Globals.imgExample,
@@ -22,7 +26,27 @@ class DataController{
             accs: DataController.accountsDataInstances.map((acc){return acc.getImg();}).toList(), 
             timeStamp: DateTime.now(),
           ),];
-  //static List<AccountListEl> accountsViewInstances = [];
+  
+
+  static List<AdditionalString> startsStringsData = [];
+  static List<AdditionalString> endStringsData = [];
+  static List<List<AdditionalString>> aditionalStringsData = [startsStringsData,endStringsData];//0-startTexts//1-endTexts
+  
+  //parametrs for creation of the additional string in the POSTMAKE alert
+  static int addStringId = 0; //0 - for all posts, 1- cust for socials, 2 - for cust accounts
+  static String addLineText = '';
+  static List<AccountData> accsChosen = [];
+  static List<String> socialsChosen = [];
+
+  static void defaultAddString(){
+    DataController.addStringId=0;
+    DataController.addLineText='';
+    DataController.accsChosen = [];
+    DataController.socialsChosen = [];
+  }
+  
+
+
 
   static void showMessage(var context,String text){
     Scaffold.of(context).showSnackBar(new SnackBar(

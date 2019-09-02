@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:social_tool/Data/dataController.dart';
 import 'package:social_tool/Data/globalVals.dart';
 
 //Tabs
@@ -110,7 +111,11 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
       : FloatingActionButton.extended(
         heroTag: 'btn2',
         key: UniqueKey(),
-        onPressed:(){Navigator.of(context).pushNamed('/makePost');},
+        onPressed:(){
+          DataController.aditionalStringsData = [];
+          DataController.defaultAddString();
+          Navigator.of(context).pushNamed('/makePost');
+          },
         label: Text("Post",style: TextStyle(color: Globals.interfaceCol,),),
         backgroundColor: Globals.secondInterfaceCol,
         icon: Icon(Icons.add,color: Globals.interfaceCol,),  

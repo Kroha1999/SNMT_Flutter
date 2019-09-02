@@ -93,7 +93,7 @@ class _PostListElState extends State<PostListEl> {
           child: Stack(
             children: <Widget>[
               postAndSocialsView(
-                offset: 0,
+                offset: 8,
                 size: 60,
                 //IMAGE TO POST
                 imgUrl: widget._imgUrl,
@@ -110,6 +110,8 @@ class _PostListElState extends State<PostListEl> {
                   height: 55,
                   width: 175,
                   child: Text(widget._description,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 9, wordSpacing: 1),
                     textAlign: TextAlign.justify,
                     
@@ -139,12 +141,12 @@ class _PostListElState extends State<PostListEl> {
                 right:  0,
                 child: Container(
                   //ACCOUNTS IMAGES
-                  child: cirleImagesRow(
+                  child: circleImagesRow(
                     contHeight: 0,
                     size: 20,
                     imgs: widget._accs,
                     maxVisible: 4,
-                    offset: 25
+                    offset: 35
                     ),
                     width: 95,
                 ),

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+ThemeData sociallAppTheme = ThemeData(
+  //TODO:Fill Theme Data
+);
+
+
 class Globals
 {
   static const Color interfaceCol = Colors.white;

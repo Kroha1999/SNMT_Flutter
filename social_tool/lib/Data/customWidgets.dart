@@ -35,19 +35,30 @@ Widget postAndSocialsView({double offset = 0.0,double size = 60,String imgUrl = 
               //generation of social Views images from list
               Positioned(
                 bottom: 0,
-                child: cirleImagesRow(contHeight: size,size: size/3,imgs: socImgs,borderColor: borderColor,borderWidth: 0.0,offset: offset))
+                child: circleImagesRow(contHeight: size,size: size/3,imgs: socImgs,borderColor: borderColor,borderWidth: 0.0,offset: offset))
             ]),
           );
 }
 
 //Must be puted in Container or other widget to manipulate position
-Widget cirleImagesRow({double contHeight = 50,
-                      double size = 23, List<String> imgs = const[Globals.faceImg,Globals.faceImg,Globals.faceImg,Globals.instImg,Globals.instImg, Globals.twitImg,],
-                      Color borderColor = Colors.black,
+Widget circleImagesRow({double contHeight = 50,
+                      double size = 23, List<String> imgs,// = const[Globals.faceImg,Globals.faceImg,Globals.faceImg,Globals.instImg,Globals.instImg, Globals.twitImg,],
+                      Color borderColor = Colors.black, Color iconColor = Colors.black,
                       double borderWidth = 1.0,offset = 0,int maxVisible = 4,})
 {
   int indexOffset = 1;
   double standartOffset = 60.0;
+
+  //changing width depending on number of images
+  double countedWidth = 0;
+  if(imgs.length==0){
+    countedWidth = 0;
+  }else if(imgs.length > maxVisible){
+    countedWidth = size + maxVisible*size - (maxVisible-1)*size/2.5;
+  }else{
+    countedWidth = 10+maxVisible*size - (maxVisible-1)*size/2.5;
+    offset = offset-size/1.8;
+  }
   
   Widget plusEl = Container();
 
@@ -56,10 +67,10 @@ Widget cirleImagesRow({double contHeight = 50,
     plusEl = Positioned(
       left:  size/2.5+offset + standartOffset - (size/1.77),
       bottom: 0,
-      child: Icon(Icons.add,color: Colors.black, size: size+borderWidth*2,)
+      child: Icon(Icons.add,color: iconColor, size: size+borderWidth*2,)
       );
   }
-
+  
   List<Widget> mainList = imgs.asMap().map((i, String url){  
     if((i+1)>maxVisible)
       return MapEntry(i,Container());
@@ -75,11 +86,11 @@ Widget cirleImagesRow({double contHeight = 50,
     );}).values.toList();
 
   List<Widget> finalList = [plusEl,...mainList];
-
+  
   
   return Container(
     height: size,
-    width: size + maxVisible*size - (maxVisible-1)*size/2.5 ,
+    width: countedWidth,
     child: Stack(
             children: finalList
           ),
