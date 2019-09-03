@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import "package:flutter/material.dart";
-import 'package:image_cropper/image_cropper.dart';
 import 'package:social_tool/Accounts/accountData.dart';
 import 'package:social_tool/Data/customWidgets.dart';
 import 'package:social_tool/Data/customWidgetsPostMake.dart';
 import 'package:social_tool/Data/dataController.dart';
 import 'package:social_tool/Data/globalVals.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 
 class MakePost extends StatelessWidget {
@@ -62,6 +62,7 @@ class _ChooseAccsState extends State<ChooseAccs> {
         if(value){
           _accounts.add(DataController.accountsDataInstances[index]);
         }
+      DataController.chosenLocation = null;
       _accsChosen = true;
       });
     });
@@ -352,13 +353,12 @@ class _MakePostBodyState extends State<MakePostBody> {
         Divider(color: Globals.secondInterfaceCol, height: 5,),
         choosePhotoWidget(),
         Container(
-          child: TextField(
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              icon: Icon(Icons.text_fields,color: Colors.black,),
-              hintText: "Location",
-            ),
-            maxLines: 1,
+          height: 35,
+          child: GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, "/makePost/locations");
+            },
+            child: locationWidget(),
           ),
         ),
         Divider(color: Globals.secondInterfaceCol, height: 5,),
@@ -383,6 +383,47 @@ class _MakePostBodyState extends State<MakePostBody> {
     );
   }
   
+  Widget locationWidget(){
+    var widget = DataController.chosenLocation == null? 
+       Text('+location',style: TextStyle(color: Colors.white, fontSize: 14),):
+       Text(DataController.chosenLocation['title'],style: TextStyle(color: Colors.white, fontSize: 14),);
+    var deleteBtn = DataController.chosenLocation == null?Container():
+            FlatButton(
+              onPressed: (){
+                setState(() {
+                 DataController.chosenLocation = null; 
+                });
+              },
+              color: Colors.white,
+              child: Text('Delete',style: TextStyle(color: Colors.grey),),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              );
+    
+
+      return  Container(
+        padding: EdgeInsets.all(5),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+          child: Row(children: <Widget>[
+            Icon(Icons.location_on,color: Colors.white, size: 14,),
+            widget,
+            Expanded(
+              child: Container(
+                
+                alignment: Alignment.centerRight,
+                child: deleteBtn,
+              ),
+            )
+          ],),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.grey
+          ),
+        ),
+      );
+
+  }
+
   //ShowAlert For Adding String
   showAlertDialog(BuildContext context,int position,String title,List<AccountData> chosenAccs,{int index}) {
   //Controller for additional string text field
@@ -501,6 +542,8 @@ class _MakePostBodyState extends State<MakePostBody> {
     },
   );
   }
+
+  
 }
 
 

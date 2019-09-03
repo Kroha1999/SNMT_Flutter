@@ -1,6 +1,7 @@
 // THIS PAGE INITIALIZE ROUTES FOR THE APP
 
 import 'package:flutter/material.dart';
+
 //Splash screen
 import 'SplashScreen/splashScreen.dart';
 //Main screen
@@ -13,6 +14,7 @@ import 'Pages/addAccount.dart' as addAcc;
 import 'Pages/makePost.dart' as makePost;
 import 'Pages/post.dart' as myPost;
 import 'Pages/mySettings.dart' as mySet;
+import 'package:social_tool/Pages/location.dart' as myLocs;
 
 
 void main() => runApp(MyApp());
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget{
         "/makePost": (BuildContext context) => makePost.MakePost(),
         "/myPost": (BuildContext context) => myPost.MyPost(),
         "/settings": (BuildContext context) => mySet.MySettings(),
+        "/makePost/locations": (BuildContext context) => myLocs.MyLocs(),
       },
     );
   }

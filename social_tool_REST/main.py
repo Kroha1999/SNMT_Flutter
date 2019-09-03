@@ -163,5 +163,15 @@ def getInfo(uid):
   usrId = usr.authenticated_params['_uid']
   return fl.jsonify(usr.user_info(usrId))
 
+@app.route('/location/<uid>/<text>')
+def getLocSugestions(uid,text):
+  usr = getUserByUID(uid)
+  locs = usr.location_fb_search(text,usr.generate_uuid())
+  suggestions = []
+  #print(json.dumps(locs,indent=4,sort_keys=True))
+  for i in locs['items']:
+    suggestions.append({'location':{'lng':i['location']['lng'],'lat':i['location']['lat']},'id':i['location']['facebook_places_id'],'title':i['title'],'name':i['location']['name']})
+  return fl.jsonify(suggestions)
+
 if __name__ == '__main__':
     app.run()

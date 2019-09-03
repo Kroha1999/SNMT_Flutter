@@ -37,6 +37,7 @@ class DataController{
   static String addLineText = '';
   static List<AccountData> accsChosen = [];
   static List<String> socialsChosen = [];
+  static Map<String, dynamic> chosenLocation;
 
   static void defaultAddString(){
     DataController.addStringId=0;
