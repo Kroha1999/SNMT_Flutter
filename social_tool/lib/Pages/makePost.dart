@@ -133,7 +133,8 @@ class _ChooseAccsState extends State<ChooseAccs> {
                               ),
                             ),
                           ],),
-                          Divider(color: Colors.black, height: 16,indent: 6, endIndent: 10,) //Or can be without divider
+                          Padding(padding: EdgeInsets.all(2),),
+                          //Divider(color: Colors.black, height: 16,indent: 6, endIndent: 10,) //Or can be without divider
                         ],
                       ),
                     ),
@@ -191,6 +192,10 @@ class _MakePostBodyState extends State<MakePostBody> {
   
   //Checkbox Check function
   void onChecked(int id,bool value){
+    value
+      ?DataController.lastCroppedPhoto = _imageFile
+      :DataController.lastCroppedPhoto = null;
+
     setState(() {
       _isChecked[id] = value; 
     });
@@ -204,8 +209,9 @@ class _MakePostBodyState extends State<MakePostBody> {
   Future _getImage(source) async {
     File image = await ImagePicker.pickImage(source: source);
     File cropped = await cropImage(image);
-    setState(() {
+    setState(() { 
       _imageFile = cropped ?? _imageFile;
+      DataController.lastCroppedPhoto = _imageFile;
     });
   }
 
@@ -324,71 +330,131 @@ class _MakePostBodyState extends State<MakePostBody> {
     showAlertDialog(context,position,"Add $pos string",widget.chosenAccs);
   }
 
+  TextEditingController mainTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(children: <Widget>[
-        Container(
-          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: Row(children: <Widget>[
-            Text("Add photo:"),
-            Checkbox(checkColor: Colors.black,activeColor: Colors.white,value: _isChecked[0], onChanged: (bool value){onChecked(0,value);},),
-            Text("Translate:"),
-            Checkbox(checkColor: Colors.black,activeColor: Colors.white,value: _isChecked[1], onChanged: (bool value){onChecked(1,value);},),
-            Container(
-                  //ACCOUNTS IMAGES
-                  child: circleImagesRow(
-                    contHeight: 30,
-                    size: 30,
-                    maxVisible: 5,
-                    imgs: widget.chosenAccs.map((acc){
-                      return acc.getImg();
-                      }).toList(),
-                    offset: 55
-                    ),
-                  
+      child: 
+      Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(children: <Widget>[
+              Container(
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Row(children: <Widget>[
+                  Text("Add photo:"),
+                  Checkbox(checkColor: Colors.black,activeColor: Colors.white,value: _isChecked[0], onChanged: (bool value){onChecked(0,value);},),
+                  Text("Translate:"),
+                  Checkbox(checkColor: Colors.black,activeColor: Colors.white,value: _isChecked[1], onChanged: (bool value){onChecked(1,value);},),
+                  Container(
+                        //ACCOUNTS IMAGES
+                        child: circleImagesRow(
+                          contHeight: 30,
+                          size: 30,
+                          maxVisible: 5,
+                          imgs: widget.chosenAccs.map((acc){
+                            return acc.getImg();
+                            }).toList(),
+                          offset: 55
+                          ),
+                        
+                      ),
+                ],),
+              ),
+              Divider(color: Globals.secondInterfaceCol, height: 5,),
+              choosePhotoWidget(),
+              Container(
+                height: 35,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, "/makePost/locations");
+                  },
+                  child: locationWidget(),
                 ),
-          ],),
-        ),
-        Divider(color: Globals.secondInterfaceCol, height: 5,),
-        choosePhotoWidget(),
-        Container(
-          height: 35,
-          child: GestureDetector(
-            onTap: (){
-              Navigator.pushNamed(context, "/makePost/locations");
-            },
-            child: locationWidget(),
+              ),
+              Divider(color: Globals.secondInterfaceCol, height: 5,),
+              addAdditionalText(0),
+              Divider(color: Globals.secondInterfaceCol, height: 5,),
+              TextField(
+                controller: mainTextController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  icon: Icon(Icons.text_fields,color: Colors.black,),
+                  labelText: 'Main text',
+                ),
+                maxLines: 7,
+                
+              ),
+              Divider(color: Globals.secondInterfaceCol, height: 5,),
+              addAdditionalText(1),
+              Divider(color: Globals.secondInterfaceCol, height: 5,),
+
+
+
+            ],),
           ),
-        ),
-        Divider(color: Globals.secondInterfaceCol, height: 5,),
-        addAdditionalText(0),
-        Divider(color: Globals.secondInterfaceCol, height: 5,),
-        TextField(
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            icon: Icon(Icons.text_fields,color: Colors.black,),
-            labelText: 'Main text',
+          Container(
+            //padding: EdgeInsets.all(5),
+            color: Colors.transparent,
+            height: 50,
+            child: Container(
+              child: Stack(children: <Widget>[
+                Positioned(
+                  left: 10,
+                  child: FlatButton(
+                    color: Colors.white,
+                    onPressed: (){
+                      DataController.mainText = mainTextController.text;
+                      chooseAccountDialog(context,widget.chosenAccs);
+                      },
+                    textColor: Colors.black,
+                    shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    child: Text('Preview',style: TextStyle(color: Colors.black),),
+                  ),
+                ),
+                 Positioned(
+                  right: 10,
+                  child: FlatButton(
+                    color: Colors.white,
+                    onPressed: (){},
+                    textColor: Colors.black,
+                    shape:  RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(9),topLeft: Radius.circular(9),topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
+                    child: Text('Post',style: TextStyle(color: Colors.black),),
+                  ),
+                ),
+                Positioned(
+                  right: 101,
+                  child: FlatButton(
+                    color: Colors.white,
+                    onPressed: (){},
+                    textColor: Colors.black,
+                    shape:  RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(9),bottomRight: Radius.circular(9),topLeft: Radius.circular(30),bottomLeft: Radius.circular(30))),
+                    child: Text('Schedule',style: TextStyle(color: Colors.black),),
+                  ),
+                ),
+
+              ],),
+              decoration: BoxDecoration(
+                //color: Globals.secondInterfaceCol,
+                gradient: LinearGradient(colors: Globals.allGrad),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+              ),
+            ),
           ),
-          maxLines: 7,
-          
-        ),
-        Divider(color: Globals.secondInterfaceCol, height: 5,),
-        addAdditionalText(1),
-        Divider(color: Globals.secondInterfaceCol, height: 5,),
-
-
-
-      ],)
+        ],
+      )
     );
   }
   
   Widget locationWidget(){
     var widget = DataController.chosenLocation == null? 
-       Text('+location',style: TextStyle(color: Colors.white, fontSize: 14),):
-       Text(DataController.chosenLocation['title'],style: TextStyle(color: Colors.white, fontSize: 14),);
+       Text('Add location',style: TextStyle(color: Colors.white, fontSize: 16),):
+       Text(DataController.chosenLocation['title'],style: TextStyle(color: Colors.white, fontSize: 16),);
+    
     var deleteBtn = DataController.chosenLocation == null?Container():
-            FlatButton(
+            Container(
+              width: 80,
+              child:FlatButton(
               onPressed: (){
                 setState(() {
                  DataController.chosenLocation = null; 
@@ -397,12 +463,14 @@ class _MakePostBodyState extends State<MakePostBody> {
               color: Colors.white,
               child: Text('Delete',style: TextStyle(color: Colors.grey),),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              );
+              )
+            );
     
 
       return  Container(
         padding: EdgeInsets.all(5),
         child: Container(
+          height: 25,
           padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
           child: Row(children: <Widget>[
             Icon(Icons.location_on,color: Colors.white, size: 14,),

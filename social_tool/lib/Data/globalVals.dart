@@ -21,6 +21,7 @@ class Globals
   static const instaGrad = [const Color(0xFF915FB5), const Color(0xFFCA436B)];
   static const twitGrad = [ const Color(0xFF20cecd),const Color(0xFF0181cc)];
   static const faceGrad = [const Color(0xFF428bc0), const Color(0xFF095b97)];
+  static const allGrad = [const Color(0xFFCA436B), const Color(0xFF428bc0)];
 
   static const standartImg = "https://member.imagineacademy.microsoft.com/sites/all/themes/custom/ita_members/images/microsoft-img.png";
 

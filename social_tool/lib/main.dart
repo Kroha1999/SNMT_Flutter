@@ -9,12 +9,13 @@ import 'package:social_tool/MainPage/mainScreen.dart';
 
 
 //Pages
-import 'Pages/account.dart' as myAcc;
-import 'Pages/addAccount.dart' as addAcc;
-import 'Pages/makePost.dart' as makePost;
-import 'Pages/post.dart' as myPost;
-import 'Pages/mySettings.dart' as mySet;
+import 'package:social_tool/Pages/account.dart' as myAcc;
+import 'package:social_tool/Pages/addAccount.dart' as addAcc;
+import 'package:social_tool/Pages/makePost.dart' as makePost;
+import 'package:social_tool/Pages/post.dart' as myPost;
+import 'package:social_tool/Pages/mySettings.dart' as mySet;
 import 'package:social_tool/Pages/location.dart' as myLocs;
+import 'package:social_tool/Pages/previewPost.dart' as myPrev;
 
 
 void main() => runApp(MyApp());
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget{
         "/myPost": (BuildContext context) => myPost.MyPost(),
         "/settings": (BuildContext context) => mySet.MySettings(),
         "/makePost/locations": (BuildContext context) => myLocs.MyLocs(),
+        "/makePost/Preview": (BuildContext context) => myPrev.MyPrev(),
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,9 +29,9 @@ class DataController{
           ),];
   
 
-  static List<AdditionalString> startsStringsData = [];
-  static List<AdditionalString> endStringsData = [];
-  static List<List<AdditionalString>> aditionalStringsData = [startsStringsData,endStringsData];//0-startTexts//1-endTexts
+  //static List<AdditionalString> startsStringsData = [];
+  //static List<AdditionalString> endStringsData = [];
+  static List<List<AdditionalString>> aditionalStringsData = [[],[]];//[startsStringsData,endStringsData];//0-startTexts//1-endTexts
   
   //parametrs for creation of the additional string in the POSTMAKE alert
   static int addStringId = 0; //0 - for all posts, 1- cust for socials, 2 - for cust accounts
@@ -46,6 +47,11 @@ class DataController{
     DataController.socialsChosen = [];
   }
   
+
+  //Preview of the account
+  static File lastCroppedPhoto;
+  static AccountData previewAcc;
+  static String mainText;
 
 
 

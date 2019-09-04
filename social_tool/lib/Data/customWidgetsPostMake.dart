@@ -35,6 +35,7 @@ class AdditionalString{
   String str;
   List<String> socials;
   List<AccountData> accounts;
+  
   AdditionalString(this.typeOfAddString,this.str, this.socials, this.accounts);
 }
 
@@ -137,6 +138,66 @@ warningDialog(BuildContext context,String text){
   );
 }
 
+
+//choose account for preview alert
+chooseAccountDialog(BuildContext context,List<AccountData> accounts){
+  return showDialog(
+    context: context,
+    barrierDismissible: false, // user must tap button for close dialog!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        
+        backgroundColor: Colors.white,
+        title: Text('Click on account for preview',style: TextStyle(color: Colors.black),),
+        content: Container(
+          width: 100,
+          height: 300,
+          child: ListView(
+            children: accounts.map((acc){
+              return GestureDetector(
+              onTap: (){
+                DataController.previewAcc = acc;
+                Navigator.pushNamed(context, "/makePost/Preview");
+              },//HERE WE GO TO PREVIEW WINDOW
+              child: Container(
+              margin: EdgeInsets.all(4),
+              color: Colors.transparent,
+              child: Column(
+                children: <Widget>[
+                  Row(children: <Widget>[
+                    accAndSocialView(size: 30,borderWidth: 0.8,borderColor: Colors.black ,socImageUrl: acc.getSocialUrl(), imageUrl: acc.getImg()),
+                    Container(
+                      width: 142,
+                      margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Text(acc.fullName()),
+                        Text(acc.getNick()),
+                      ],),
+                    ),
+                  ],),
+                Divider(color: Colors.black, height: 16,indent: 6, endIndent: 10,) //Or can be without divider
+                ],
+              ),
+              ),
+              );
+            }).toList(),
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('Cancel', style: TextStyle(color: Colors.black),),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    },
+  );
+}
 
 
 
