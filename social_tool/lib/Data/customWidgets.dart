@@ -1,9 +1,12 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:social_tool/Data/globalVals.dart';
 
 
-Widget postAndSocialsView({double offset = 0.0,double size = 60,String imgUrl = Globals.imgExample,double borderWidth = 1.0,
+Widget postAndSocialsView({double offset = 0.0,double size = 60,var img = Globals.imgExample,double borderWidth = 1.0,
                           Color borderColor = Colors.black,
                           List<String> socImgs = const [Globals.faceImg,Globals.instImg, Globals.twitImg,]})
 {
@@ -21,8 +24,9 @@ Widget postAndSocialsView({double offset = 0.0,double size = 60,String imgUrl = 
                     borderRadius: BorderRadius.circular(20.0),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AdvancedNetworkImage(
-                          imgUrl,
+                      image: (img is File)?Image.file(img).image
+                        : (img is Uint8List)?Image.memory(img).image:AdvancedNetworkImage(
+                          img,
                           useDiskCache: true,
                           cacheRule: CacheRule(maxAge: const Duration(days: 10))
                         ),//NetworkImage(_url)

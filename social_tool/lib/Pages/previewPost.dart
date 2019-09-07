@@ -9,37 +9,13 @@ import 'package:social_tool/Data/globalVals.dart';
 class MyPrev extends StatelessWidget {
   File _photo;
   Map<String,dynamic> _location;
-  String _startText = "";
-  String _mainText = "";
-  String _endText = "";
+
   
   void _initValues(){
     _photo = DataController.lastCroppedPhoto;
     _location = DataController.chosenLocation;
-    parseStarts();
-    parseEnds();
-    parseMain();
   }
 
-  void parseStarts() {
-    String soc = DataController.previewAcc.getSocial();
-    DataController.aditionalStringsData[0].forEach((str){
-      if(str.socials.contains(soc) || str.accounts.contains(DataController.previewAcc) || (str.socials.isEmpty && str.accounts.isEmpty))
-        _startText += str.str;
-    });
-  }
-
-  void parseMain(){
-    _mainText = _startText + DataController.mainText +_endText;
-  }
-
-  void parseEnds(){
-    String soc = DataController.previewAcc.getSocial();
-    DataController.aditionalStringsData[1].forEach((str){
-      if(str.socials.contains(soc) || str.accounts.contains(DataController.previewAcc) || (str.socials.isEmpty && str.accounts.isEmpty))
-        _endText += str.str;
-    });
-  }
 
   Widget buildView(context){
     
@@ -71,13 +47,6 @@ class MyPrev extends StatelessWidget {
           Text(_location['name'],style: TextStyle(color: Colors.grey,fontSize: 12),),
         ],),
       );
-      
-    var textWidget = Container(
-      padding: EdgeInsets.all(5),
-      alignment: Alignment.centerLeft,
-      child: Text(_mainText),
-    );
-
 
 
 
@@ -85,7 +54,7 @@ class MyPrev extends StatelessWidget {
       children: <Widget>[
       photoWidget,
       locationWidget,
-      textWidget,      
+      TextPart(),      
 
     ]);
   }
@@ -103,6 +72,71 @@ class MyPrev extends StatelessWidget {
       ),
     );
   }
+ 
+}
 
-  
+class TextPart extends StatefulWidget {
+  @override
+  _TextPartState createState() => _TextPartState();
+}
+
+class _TextPartState extends State<TextPart> {
+
+  String _startText = "";
+  String _mainText = "";
+  String _endText = "";
+
+  void parseStarts() {
+    _startText = "";
+    String soc = DataController.previewAcc.getSocial();
+    DataController.aditionalStringsData[0].forEach((str){
+      if(str.socials.contains(soc) || str.accounts.contains(DataController.previewAcc) || (str.socials.isEmpty && str.accounts.isEmpty))
+        _startText += str.str;
+    });
+  }
+
+  void parseMain(){
+    _mainText = "";
+    _mainText = _startText + DataController.mainText +_endText;
+  }
+
+  void parseEnds(){
+    _endText = "";
+    String soc = DataController.previewAcc.getSocial();
+    DataController.aditionalStringsData[1].forEach((str){
+      if(str.socials.contains(soc) || str.accounts.contains(DataController.previewAcc) || (str.socials.isEmpty && str.accounts.isEmpty))
+        _endText += str.str;
+    });
+  }
+
+  void initText()async{
+    parseStarts();
+    parseEnds();
+    parseMain();
+  }
+
+  void translate()async{
+    if(DataController.translate){
+      _mainText = await DataController.previewAcc.translate(_mainText);
+      setState(() { });
+      print("Main  "+_mainText);
+    }
+  }
+
+  @override
+  void initState() {
+    initText();
+    translate();
+    super.initState();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      alignment: Alignment.centerLeft,
+      child: Text(_mainText),      
+    );
+  }
 }

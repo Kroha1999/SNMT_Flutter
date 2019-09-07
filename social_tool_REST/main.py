@@ -1,16 +1,22 @@
 import flask as fl
-from instagram_private_api import Client, ClientCompatPatch
+from flask import request
+from instagram_private_api import Client, ClientCompatPatch,MediaRatios
+from instagram_private_api_extensions import media
 import json
 import pickle
 import uuid
 
+import binascii
 import copy
 import sys
+
+import languages
 
 encoding = 'utf-8'
 app = fl.Flask(__name__)
 
 user_cache = {}
+posts_statuses_cache={}
 
 #Returns client by uid if 
 def getUserByUID(uid):
@@ -173,5 +179,99 @@ def getLocSugestions(uid,text):
     suggestions.append({'location':{'lng':i['location']['lng'],'lat':i['location']['lat']},'id':i['location']['facebook_places_id'],'title':i['title'],'name':i['location']['name']})
   return fl.jsonify(suggestions)
 
+
+@app.route('/translate', methods = ['POST'])
+def translateText():
+  text = request.form['text']
+  targetLang = request.form['lang']
+  translated = languages.translate(text,languages.LANGTOCODES[targetLang.lower()])
+  print(translated)
+  return translated
+
+@app.route('/post',methods =['POST'])
+def postApost():
+  #TODO: posting
+  #here empty string ("") will be equal to None
+
+
+  postUid = request.form['uidPost']
+  uid = request.form['uid']
+  text = request.form['text']
+  translate = request.form['trans']
+  targetLang = request.form['lang']
+  location = request.form['loc']
+  photo = request.form['photo']
+  social = request.form['social']
+  width = request.form['width']
+  height = request.form['height']
+  status = request.form['status']
+
+  res = postToWeb(uid,text,translate,targetLang,location,photo,social,width,height)
+  
+  #storing post statuses
+  addPostStatus(status,postUid,uid,res)
+  return res
+  
+def addPostStatus(status,postUid,accUid,res):
+  global posts_statuses_cache
+  #getting stored data about posts statuses
+  if posts_statuses_cache == {}:
+    with open('cookies/postStatuses', "rb") as f:
+      posts_statuses_cache = pickle.load(f)
+
+  #setting status
+  try:
+    posts_statuses_cache[str(postUid)]['status'] = status
+    posts_statuses_cache[str(postUid)][str(accUid)] = res
+  except:
+    posts_statuses_cache[str(postUid)] = {}
+    posts_statuses_cache[str(postUid)]['status'] = status
+    posts_statuses_cache[str(postUid)][str(accUid)] = res
+  
+  #saving stored data
+  with open('cookies/postStatuses', "wb") as f:
+    pickle.dump(posts_statuses_cache,f)
+
+def postToWeb(uid,text,translate,targetLang,location,photo,social,width,height):
+  #looking for account
+  account = None
+  try:
+      if not (uid in user_cache.keys()):
+        with open('cookies/cookie2', "rb") as f:
+          user_cook = pickle.load(f)
+        print('not cahced uid = '+str(uid), file=sys.stdout)
+        user_cache[uid] = Client('user','pass',cookie=user_cook[uid])
+        
+        account = user_cache[uid]
+      else:
+        print('cahced uid', file=sys.stdout)
+        account = user_cache[uid]
+  except Exception as e:
+    return fl.jsonify(str(e))
+
+  print(text, file=sys.stdout)
+  
+  #checking Image
+  if(translate == 'true' and text != ''):
+    text = languages.translate(text,languages.LANGTOCODES[targetLang.lower()])
+
+  #checking photo for instagram and posting to Instagram
+  if(social == 'Instagram' and photo == ''):
+    return 'INSTAGRAM POST: No photo added'
+  else:
+    if(location == ''):
+      location = None
+    else:
+      location = account.location_info(location)['location']
+      location['address'] = location['lat']
+    try:
+      #account.post_photo(binascii.a2b_base64(photo), (int(width),int(height)),text,location = location)
+      return 'Success' 
+    except Exception as ex:
+      return str(ex)
+
+
+
 if __name__ == '__main__':
     app.run()
+    #app.run(host= '0.0.0.0', port=8090)

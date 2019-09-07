@@ -5,8 +5,6 @@ import 'dart:async';
 import "package:social_tool/Data/dataController.dart";
 import 'package:social_tool/Data/globalVals.dart';
 
-String url = "http://10.0.3.2:5000";
-
 
 class AccountData{
   final String _socialNetwork;
@@ -74,7 +72,7 @@ class AccountData{
         _uid = json['uid'];
 
   //creating AccountData from json strings
-  static AccountData newAccFromJson(Map<String, dynamic> json){
+  static AccountData newAccFromJson(Map<String, dynamic> json,{bool update = true}){
     var acc = AccountData(json['soc']);
     acc._nickName = json['nick'];
     acc._fullName = json['fullName'];
@@ -82,7 +80,8 @@ class AccountData{
     acc._lang = json['lang'];
     acc._uid = json['uid'];
     //updating data (in case something was changed[img,name,...,etc])
-    acc.updateData(acc._uid);
+    if(update) 
+      acc.updateData(acc._uid);
     return acc;
   }
 
@@ -103,7 +102,7 @@ class AccountData{
   Future<String> auth(nick,password,lan) async {
     this._lang = lan;
     print("Logging In");
-    var resp = await http.get(url+"/instagram/login/"+nick+"/"+password).then(_processResponce);
+    var resp = await http.get(Globals.url+"/instagram/login/"+nick+"/"+password).then(_processResponce);
     await getInfo();
     await getGenInfo();
     return resp;
@@ -112,7 +111,7 @@ class AccountData{
   //updateAccountData by uid
   Future<String> updateData(uid) async {
     print("Updating Data");
-    var resp = await http.get(url+"/instagram/login/"+uid).then(_processResponce);
+    var resp = await http.get(Globals.url+"/instagram/login/"+uid).then(_processResponce);
     print("Updating Data");
     await getInfo();
     await getGenInfo();
@@ -162,7 +161,7 @@ class AccountData{
     }
 
     print("DELETING DATA FROM WEB");
-    await http.delete(url+"/remove/"+uid);
+    await http.delete(Globals.url+"/remove/"+uid);
   }
   
   Future<Map<String, dynamic>> getInfo({String uid})async{
@@ -170,7 +169,7 @@ class AccountData{
       uid = _uid;
     }
     //int numbOfLikes = 0;
-    http.Response response = await http.get(url+"/instagram/info/"+uid);
+    http.Response response = await http.get(Globals.url+"/instagram/info/"+uid);
     print(response.body);
     Map<String, dynamic> val = jsonDecode(response.body);
     this._numberOfComments = val['comments'];
@@ -183,11 +182,19 @@ class AccountData{
     if(uid == null){
       uid = _uid;
     }
-    http.Response response = await http.get(url+"/instagram/genInfo/"+uid);
+    http.Response response = await http.get(Globals.url+"/instagram/genInfo/"+uid);
     
     Map<String, dynamic> val = jsonDecode(response.body);
     this._genInfoVar = val['user'];
     return val;
+  }
+
+  Future<String> translate(String text)async{
+    http.Response resp = await http.post(Globals.url+'/translate',body: {'text':text,'lang':this.getLang()});
+    if(resp.statusCode==200){
+      print(resp.body);
+    }
+    return resp.body;
   }
 
   void postAPhoto(){}

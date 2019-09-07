@@ -7,10 +7,12 @@ ThemeData sociallAppTheme = ThemeData(
 
 class Globals
 {
+
+  static const String url = "http://10.0.3.2:5000";
+
   static const Color interfaceCol = Colors.white;
   static const Color secondInterfaceCol = Colors.black;
   static const Color backgroundCol = Color(0xFFf5f5f5);
-
 
 
 

@@ -7,6 +7,7 @@ import "package:social_tool/Accounts/accountData.dart";
 import 'package:social_tool/Data/customWidgetsPostMake.dart';
 import 'package:social_tool/MainPage/accounts_tab.dart';
 import 'package:social_tool/MainPage/posts_tab.dart';
+import 'package:social_tool/PostsData/postData.dart';
 
 import 'globalVals.dart';
 
@@ -18,15 +19,18 @@ class DataController{
   static List<String> accountsStrings = []; // key: uid - represents curent accounts
   static List<AccountData> accountsDataInstances = [];
   static List<AccountListEl> accounts = [/*AccountListEl("Zorik","zik","Instagram",'English','12351234123',imageurl: Globals.standartImg,)*/];
-  
-  static List<PostListEl> posts = [PostListEl(
+
+
+
+  static List<PostData> postsDatas = [];
+  static List<PostListEl> posts = [/*PostListEl(
             description: Globals.textExample,
             imgUrl: Globals.imgExample,
             status: "Completed",
             socials: [Globals.faceImg,Globals.instImg,Globals.twitImg],
             accs: DataController.accountsDataInstances.map((acc){return acc.getImg();}).toList(), 
             timeStamp: DateTime.now(),
-          ),];
+          ),*/];
   
 
   //static List<AdditionalString> startsStringsData = [];
@@ -52,6 +56,7 @@ class DataController{
   static File lastCroppedPhoto;
   static AccountData previewAcc;
   static String mainText;
+  static bool translate = false;
 
 
 
@@ -64,7 +69,7 @@ class DataController{
     ));
   }
 
-  //---------------------------DATA---------------------------------------
+  //---------------------------DATA-ACCOUNTS---------------------------------------
   //LOCAL DATA Save accounts uids to local memory
   static void saveAccountsInstanses({AccountData accToReplace}) async {
     //Changing Data instance in local memory
@@ -200,9 +205,40 @@ class DataController{
               ((lastGrad == Globals.twitGrad) ? Globals.twitGrad:Globals.faceGrad);
   }
 
+  //---------------------------DATA-POSTS---------------------------------------
+  //LOCAL DATA Save posts to local memory
+  static void savePosts() async {
+    //Changing Data instance in local memory if needed
+
+    //Continue here
+    var pref =  await SharedPreferences.getInstance();
+    List<String> stringPosts = [];
+    
+    DataController.posts.forEach((p){
+      stringPosts.add(p.saveInstance());
+    });
+
+    pref.setStringList("postInstancesEncrypted", stringPosts);
+  }
+
+  static void loadPosts() async {
+    //Changing Data instance in local memory if needed
+
+    //Continue here
+    var pref =  await SharedPreferences.getInstance();
+    List<String> stringPosts = pref.getStringList("postInstancesEncrypted");
+    
+    stringPosts.forEach((str){
+      DataController.posts.add(PostListEl(PostData.loadPost(str)));
+    });
 
 
-
+    //pref.setStringList("postInstancesEncrypted", stringPosts);
+  }
+  static deleteAllPosts()async{
+    var pref =  await SharedPreferences.getInstance();
+    pref.remove("postInstancesEncrypted");
+  }
   //------------------------------VIEW---------------------------------------------
   //In Accounts tab
   static void createAccView(fullName,nickName,socialNetwork,lang,uid,imgUrl)

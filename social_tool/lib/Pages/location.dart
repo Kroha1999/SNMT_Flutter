@@ -40,7 +40,7 @@ class _LocationChooserState extends State<LocationChooser> {
     if(text.length>1){
       List<dynamic> _locations;
       String uid = randInstaAcc();
-      http.Response resp = await http.get(url+'/location/$uid/$text');
+      http.Response resp = await http.get(Globals.url+'/location/$uid/$text');
       
       if(resp.statusCode == 200)
         _locations = jsonDecode(resp.body);

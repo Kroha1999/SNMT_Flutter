@@ -63,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future initData() async {
     //REstoring Data with accounts
     DataController.getAccounts();
+    DataController.loadPosts();
     await Future.delayed(Duration(seconds: 3));
   }
 

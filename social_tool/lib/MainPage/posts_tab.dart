@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:social_tool/PostsData/postData.dart';
 import 'package:uuid/uuid.dart';
 import 'package:social_tool/Data/customWidgets.dart';
 import 'package:social_tool/Data/dataController.dart';
@@ -33,14 +34,20 @@ class _PostsListViewState extends State<PostsListView> {
 }
 
 class PostListEl extends StatefulWidget {
-
-  String _description;
-  String _imgUrl;
+  
+   String _postUuid;
+  final PostData post;
   String _status;
+  
+  String _description;
+  var _img;
   List<String> _socials;
-  List<String> _accs;
+  List<String> _accsImgs;
   DateTime _timeStamp;
-  final String _postUuid = Uuid().v1();
+  
+  String saveInstance(){
+    return post.savePost();
+  }
 
   String getUUID(){
     return _postUuid;
@@ -48,21 +55,14 @@ class PostListEl extends StatefulWidget {
 
   
   //Constructor
-  PostListEl({
-    String description,
-    String imgUrl,
-    String status,
-    List<String> socials,
-    List<String> accs,
-    DateTime timeStamp,
-  })
-  {
-    this._description = description;
-    this._imgUrl = imgUrl;
-    this._status = status;
-    this._timeStamp = timeStamp;
-    this._socials = socials;
-    this._accs = accs;
+  PostListEl(this.post){
+    this._postUuid = this.post.getUid();
+    this._timeStamp = post.getTimeStamp();
+    this._description = post.getDescription();
+    this._img = post.getPhoto();
+    this._socials = post.getSocials();
+    this._accsImgs = post.getAccsImgs();
+    this._status = post.getStatus();
   }
 
   @override
@@ -96,7 +96,7 @@ class _PostListElState extends State<PostListEl> {
                 offset: 8,
                 size: 60,
                 //IMAGE TO POST
-                imgUrl: widget._imgUrl,
+                img: widget._img,
                 borderWidth: 1,
                 borderColor: Colors.black,
                 //SOCIALS TO POST
@@ -144,7 +144,7 @@ class _PostListElState extends State<PostListEl> {
                   child: circleImagesRow(
                     contHeight: 0,
                     size: 20,
-                    imgs: widget._accs,
+                    imgs: widget._accsImgs,
                     maxVisible: 4,
                     offset: 35
                     ),

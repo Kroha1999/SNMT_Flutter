@@ -8,6 +8,9 @@ import 'package:social_tool/Data/dataController.dart';
 import 'package:social_tool/Data/globalVals.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_tool/MainPage/posts_tab.dart';
+import 'package:social_tool/PostsData/postData.dart';
+import 'package:uuid/uuid.dart';
 
 
 class MakePost extends StatelessWidget {
@@ -197,7 +200,9 @@ class _MakePostBodyState extends State<MakePostBody> {
       :DataController.lastCroppedPhoto = null;
 
     setState(() {
-      _isChecked[id] = value; 
+      _isChecked[id] = value;
+      if(id==1)  
+        DataController.translate = value; 
     });
   }
   
@@ -416,7 +421,31 @@ class _MakePostBodyState extends State<MakePostBody> {
                   right: 10,
                   child: FlatButton(
                     color: Colors.white,
-                    onPressed: (){},
+                    onPressed: (){
+
+
+                      // POSTING FUNCTION + POST VIEW
+                      var postToPost = PostData(
+                        DataController.lastCroppedPhoto,
+                        DataController.chosenLocation,
+                        widget.chosenAccs,// accounts list
+                        _isChecked[1],// bool translate
+                        DataController.aditionalStringsData[0],
+                        mainTextController.text,//mainText
+                        DataController.aditionalStringsData[1],
+                        "Processing",
+                        time: DateTime.now()
+                        );
+                      postToPost.postApost();
+                      DataController.posts.add(PostListEl(postToPost));
+                      DataController.postsDatas.add(postToPost);
+                      //Saving posts instances
+                      //DataController.deleteAllPosts();
+                      DataController.savePosts();
+                      //Moving to posts
+                      Navigator.pop(context);
+
+                      },
                     textColor: Colors.black,
                     shape:  RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(9),topLeft: Radius.circular(9),topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
                     child: Text('Post',style: TextStyle(color: Colors.black),),
@@ -611,6 +640,9 @@ class _MakePostBodyState extends State<MakePostBody> {
   );
   }
 
+  postAPost(){
+
+  }
   
 }
 

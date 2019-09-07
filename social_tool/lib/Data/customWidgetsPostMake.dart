@@ -15,10 +15,8 @@ Future<File> cropImage(File imagefile) async {
   if(imagefile!=null){
     File cropped = await ImageCropper.cropImage(
       sourcePath: imagefile.path,
-      ratioX: 1.0,
-      ratioY: 1.0,
-      maxWidth: 512,
-      maxHeight: 512,
+      maxWidth: 1080,
+      maxHeight: 1350,
       toolbarColor: Globals.interfaceCol,
       toolbarWidgetColor: Globals.secondInterfaceCol,
       toolbarTitle: "Crop Wise"
@@ -35,7 +33,7 @@ class AdditionalString{
   String str;
   List<String> socials;
   List<AccountData> accounts;
-  
+
   AdditionalString(this.typeOfAddString,this.str, this.socials, this.accounts);
 }
 
@@ -160,25 +158,32 @@ chooseAccountDialog(BuildContext context,List<AccountData> accounts){
                 Navigator.pushNamed(context, "/makePost/Preview");
               },//HERE WE GO TO PREVIEW WINDOW
               child: Container(
-              margin: EdgeInsets.all(4),
-              color: Colors.transparent,
-              child: Column(
-                children: <Widget>[
-                  Row(children: <Widget>[
-                    accAndSocialView(size: 30,borderWidth: 0.8,borderColor: Colors.black ,socImageUrl: acc.getSocialUrl(), imageUrl: acc.getImg()),
-                    Container(
-                      width: 142,
-                      margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                        Text(acc.fullName()),
-                        Text(acc.getNick()),
-                      ],),
-                    ),
+  
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 1),
+                  //color: Colors.red,
+                  
+                ),  
+                margin: EdgeInsets.all(4),
+                child: Column(
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      accAndSocialView(size: 40,borderWidth: 0.8,borderColor: Colors.black ,socImageUrl: acc.getSocialUrl(), imageUrl: acc.getImg()),
+                      Container(
+                        width: 142,
+                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                          Text(acc.fullName()),
+                          Text(acc.getNick()),
+                        ],),
+                      ),
                   ],),
-                Divider(color: Colors.black, height: 16,indent: 6, endIndent: 10,) //Or can be without divider
+                //Divider(color: Colors.black, height: 16,indent: 6, endIndent: 10,) //Or can be without divider
                 ],
               ),
               ),
