@@ -13,6 +13,7 @@ class AccountData{
   String _imgUrl;
   String _lang;
   String _uid;
+  bool needsRelogin = false;
 
   //INSTA
   int _numberOfLikes;
@@ -82,6 +83,12 @@ class AccountData{
     //updating data (in case something was changed[img,name,...,etc])
     if(update) 
       acc.updateData(acc._uid);
+      //TODO: NEEDS RELOGIN MUST BE DONE
+      if(acc.needsRelogin){
+        print(acc._nickName.toString()+":  NEEDS RELOGIN");
+        DataController.accountsDataInstances.remove(acc);
+      }
+      //print("QQQQQQQQQQQQQ: "+jsonEncode(acc));
     return acc;
   }
 
@@ -112,18 +119,24 @@ class AccountData{
   Future<String> updateData(uid) async {
     print("Updating Data");
     var resp = await http.get(Globals.url+"/instagram/login/"+uid).then(_processResponce);
+    if(resp == 'Success'){
+      await getInfo();
+      await getGenInfo();
+    }
+    else{
+      needsRelogin = true;
+    }
     print("Updating Data");
-    await getInfo();
-    await getGenInfo();
-    return resp;
+
+    return  resp;
   }
   
   //_processResponce for auth and updateData funcs
-  String _processResponce(http.Response response)  {
+  Future<String> _processResponce(http.Response response) async {
     print("RESP: "+response.statusCode.toString());
     if (response.statusCode == 200){
       
-      //print(response.body);
+      print(response.body);
 
       try{
         //on successful responce

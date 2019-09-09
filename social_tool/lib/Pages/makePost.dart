@@ -97,7 +97,8 @@ class _ChooseAccsState extends State<ChooseAccs> {
                 children: DataController.accountsDataInstances.map((acc){
                   if(_checkBoxes.length!=DataController.accountsDataInstances.length)
                     _checkBoxes.add(false);
-                  return GestureDetector(
+                  //if account doesn't need relogining
+                  return !acc.needsRelogin ? GestureDetector(
                     onTap: (){
                       setState(() {
                         _checkBoxes[DataController.accountsDataInstances.indexOf(acc)] = !_checkBoxes[DataController.accountsDataInstances.indexOf(acc)];
@@ -141,7 +142,7 @@ class _ChooseAccsState extends State<ChooseAccs> {
                         ],
                       ),
                     ),
-                  );
+                  ):Container();
                 }).toList()
               ),
             ),
@@ -638,10 +639,6 @@ class _MakePostBodyState extends State<MakePostBody> {
       return alert;
     },
   );
-  }
-
-  postAPost(){
-
   }
   
 }

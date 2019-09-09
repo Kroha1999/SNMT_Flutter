@@ -69,7 +69,7 @@ def auth(username,password):
 
       with open('cookies/cookie2', "wb") as f:
         pickle.dump(user_cook,f)
-
+      print("ERRRRRRROROROOROROR "+user_info)
       return fl.jsonify(user_info)
 
     except Exception as e:
@@ -79,7 +79,6 @@ def auth(username,password):
 def reAuth(uid):
     #cached apis
     global user_cache 
-
 
     try:
       if not (uid in user_cache.keys()):
@@ -132,36 +131,39 @@ def removeAcc(uid):
     pickle.dump(user_cook,f)
 
   return "success"
-  
 
 @app.route('/instagram/info/<uid>')
 def getLikes(uid):
-  usr = getUserByUID(uid)
-  usrId = usr.authenticated_params['_uid']
-  
-  number_of_likes = 0
-  number_of_comments = 0
+  try:
+    usr = getUserByUID(uid)
+    usrId = usr.authenticated_params['_uid']
+    
+    number_of_likes = 0
+    number_of_comments = 0
 
-  #Pagination implemented through 'next_max_id'
-  results = usr.user_feed(usrId)
-  next_max_id = -100
-  while next_max_id:
-    if(next_max_id == -100):
-      results = usr.user_feed(usrId)
-    else:
-      results = usr.user_feed(usrId, max_id=next_max_id)
+    #Pagination implemented through 'next_max_id'
+    results = usr.user_feed(usrId)
+    next_max_id = -100
+    while next_max_id:
+      if(next_max_id == -100):
+        results = usr.user_feed(usrId)
+      else:
+        results = usr.user_feed(usrId, max_id=next_max_id)
 
-    data = results['items']
-    for x in data:
-      number_of_likes += x['like_count']
-      number_of_comments += x['comment_count']
-    next_max_id = results.get('next_max_id')
+      data = results['items']
+      for x in data:
+        number_of_likes += x['like_count']
+        number_of_comments += x['comment_count']
+      next_max_id = results.get('next_max_id')
 
-  retVal = {
-    'likes':number_of_likes,
-    'comments':number_of_comments
-  }
-  return fl.jsonify(retVal)
+    retVal = {
+      'likes':number_of_likes,
+      'comments':number_of_comments
+    }
+    return fl.jsonify(retVal)
+  except Exception as ex:
+    return fl.jsonify(str(ex))
+    
 
 @app.route('/instagram/genInfo/<uid>')
 def getInfo(uid):
@@ -178,7 +180,6 @@ def getLocSugestions(uid,text):
   for i in locs['items']:
     suggestions.append({'location':{'lng':i['location']['lng'],'lat':i['location']['lat']},'id':i['location']['facebook_places_id'],'title':i['title'],'name':i['location']['name']})
   return fl.jsonify(suggestions)
-
 
 @app.route('/translate', methods = ['POST'])
 def translateText():
@@ -265,7 +266,7 @@ def postToWeb(uid,text,translate,targetLang,location,photo,social,width,height):
       location = account.location_info(location)['location']
       location['address'] = location['lat']
     try:
-      #account.post_photo(binascii.a2b_base64(photo), (int(width),int(height)),text,location = location)
+      account.post_photo(binascii.a2b_base64(photo), (int(width),int(height)),text,location = location)#MUST BE COMMENTED IN ORDER TO PREVENT POSTING DURING TESTING
       return 'Success' 
     except Exception as ex:
       return str(ex)

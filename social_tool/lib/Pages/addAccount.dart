@@ -43,32 +43,33 @@ class AccChooser extends StatelessWidget {
             //Go to Insta Page
             goNext(context,AddInsta());
           },
-          child: Hero(
-            tag: "InstagramAddAccount",
             child: Container(
               margin: EdgeInsets.all(6.0),
               padding: EdgeInsets.all(10.0),
               child: Row(children: <Widget>[
                 // INSTAGRAM icon
-                Container(
-                    width: 35,
-                    height: 35,
-                    margin: EdgeInsets.fromLTRB(5, 0, 80, 0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AdvancedNetworkImage(
-                          Globals.instImg,
-                          useDiskCache: true,
-                          cacheRule: CacheRule(maxAge: const Duration(days: 10))
-                        ),//NetworkImage(Globals.instImg)
-                      )
-                    ),
+                Hero(
+                  tag: "addAccInta",
+                  child: Container(
+                      width: 35,
+                      height: 35,
+                      margin: EdgeInsets.fromLTRB(5, 0, 80, 0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AdvancedNetworkImage(
+                            Globals.instImg,
+                            useDiskCache: true,
+                            cacheRule: CacheRule(maxAge: const Duration(days: 10))
+                          ),//NetworkImage(Globals.instImg)
+                        )
+                      ),
+                  ),
                 ),
                 //Text
-                Text("Instagram",style: TextStyle(color: Colors.white,fontSize: 20.0,fontWeight: FontWeight.bold),)
+                Material(color:Colors.transparent,child: Text("Instagram",style: TextStyle(color: Colors.white,fontSize: 20.0,fontWeight: FontWeight.bold),))
               ],),
               width: 360.0,
               decoration: BoxDecoration(
@@ -79,7 +80,6 @@ class AccChooser extends StatelessWidget {
               ),
             ),
           ),
-        ),
 
         //TWITTER ADD ACCOUNT
         GestureDetector(
@@ -144,8 +144,6 @@ class AddInsta extends StatelessWidget {
         builder: (context) => Center(
           child: Center(
             child: SingleChildScrollView(
-              child: Hero(
-                tag: 'InstagramAddAccount',
                 child: Container(
                   margin: EdgeInsets.all(30.0),
                   padding: EdgeInsets.all(10.0),
@@ -160,6 +158,26 @@ class AddInsta extends StatelessWidget {
 
                   child: Center(
                     child: Column(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
+                      Hero(tag: 'addAccInta',
+                      child: Container(
+                            width: 75,
+                            height: 75,
+                            margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AdvancedNetworkImage(
+                                  Globals.instImg,
+                                  useDiskCache: true,
+                                  cacheRule: CacheRule(maxAge: const Duration(days: 10))
+                                ),//NetworkImage(Globals.instImg)
+                              )
+                            ),
+                        ),
+                      ),
+                    
                       //Nickname
                       Container(
                         height: 43,
@@ -221,7 +239,6 @@ class AddInsta extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }

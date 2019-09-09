@@ -97,6 +97,7 @@ class DataController{
   }
 
   //LOCAL DATA Get Account from local memory to accountsDataInstances and assighn View (with update params)
+  static int counter = 0;
   static void getAccounts() async {
     var pref =  await SharedPreferences.getInstance();
     //pref.remove("accountsInstances");  //Cleaning account FOR TESTING
@@ -120,8 +121,7 @@ class DataController{
     });
   }
 
-  static void removeAccount(context,{String elementUID})
-  {
+  static void removeAccount(context,{String elementUID}){
     if(elementUID == null || elementUID == ""){
       elementUID = DataController.lastUid;
     }
@@ -238,6 +238,12 @@ class DataController{
   static deleteAllPosts()async{
     var pref =  await SharedPreferences.getInstance();
     pref.remove("postInstancesEncrypted");
+    DataController.posts = [];
+  }
+
+  static void deletePostListEl(PostListEl del){
+    DataController.posts.remove(del);
+    DataController.savePosts();
   }
   //------------------------------VIEW---------------------------------------------
   //In Accounts tab
