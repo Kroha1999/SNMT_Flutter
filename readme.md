@@ -20,12 +20,10 @@ This application is created in order to make life much simpler and to help peopl
 ## Examples of work
 #### Logging in
 
-![](https://media.giphy.com/media/kEjDHIF3CjMfk3d4I9/source.gif)
+![Alt Text](https://media.giphy.com/media/kEjDHIF3CjMfk3d4I9/giphy.gif)
 
 #### Creating a post
-![](https://media.giphy.com/media/chnxYVfYgkj7WmnqFP/source.gif)
-
-
+![Alt Text](https://media.giphy.com/media/chnxYVfYgkj7WmnqFP/giphy.gif)
 
 ## Additional information
 
