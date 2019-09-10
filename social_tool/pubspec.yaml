@@ -28,6 +28,7 @@ dependencies:
   image_cropper: ^1.0.2
   intl: ^0.16.0
   uuid: ^2.0.2
+  permission: ^0.1.2
 
   #flutter_bloc: ^0.4.12
   

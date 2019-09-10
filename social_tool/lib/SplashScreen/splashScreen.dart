@@ -7,7 +7,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:social_tool/Data/dataController.dart';
 import 'package:social_tool/MainPage/mainScreen.dart';
 
+
 class SplashScreen extends StatefulWidget {
+  
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -61,6 +63,10 @@ class _SplashScreenState extends State<SplashScreen> {
       );
 
   Future initData() async {
+    //var permissions = await Permission.getPermissionsStatus([PermissionName.Internet, PermissionName.Camera]);
+    //var permissionNames = await Permission.requestPermissions([PermissionName.Internet, PermissionName.Camera]);
+
+    //Permission.openSettings();
     //REstoring Data with accounts
     DataController.getAccounts();
     DataController.loadPosts();

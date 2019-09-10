@@ -110,8 +110,12 @@ class AccountData{
     this._lang = lan;
     print("Logging In");
     var resp = await http.get(Globals.url+"/instagram/login/"+nick+"/"+password).then(_processResponce);
-    await getInfo();
-    await getGenInfo();
+    if(resp == 'Success'){
+      await getInfo();
+      await getGenInfo();
+    }else{
+      return resp.toString();
+    }
     return resp;
   }
 

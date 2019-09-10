@@ -143,14 +143,16 @@ class AccountPage extends StatelessWidget {
                         upBar(context),
                         //This ListView must be a custom object with analyze data (for Insta/Twit/Face separetly)
                         Container(
-                          padding: EdgeInsets.all(15.0),
+                          padding: EdgeInsets.all(25.0),
                           margin: EdgeInsets.fromLTRB(10.0, 5, 10.0, 5),
                           width: MediaQuery.of(context).size.width - 20,
-                          height: 1000,
+                          height: 100,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),//BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(20.0),
                             color: Globals.interfaceCol
                           ),
+                          alignment: Alignment.topCenter,
+                          child: Text("Here will be more info and much more usefull things!",textAlign: TextAlign.center,style: TextStyle(fontSize: 20,),),
                         ),
                         deleteBar(context),
                       ],),

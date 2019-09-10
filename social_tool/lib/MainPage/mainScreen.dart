@@ -6,7 +6,19 @@ import 'package:social_tool/Data/globalVals.dart';
 //Tabs
 import 'accounts_tab.dart' as accTab;
 import 'posts_tab.dart' as postTab; 
+import 'package:permission/permission.dart';
 
+
+void getPermissions()async{
+  var list = [PermissionName.Internet, PermissionName.Camera];
+
+  for(var per in list){
+    var permissions = await Permission.getPermissionsStatus([per]);
+    if(permissions[0].permissionStatus == PermissionStatus.deny)
+      await Permission.requestPermissions([per]);
+  }
+  
+  }
 
 //Dynamic home page
 class Home extends StatefulWidget {
@@ -22,6 +34,7 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
   
   @override
   void initState(){
+    getPermissions();
     _scrollController = ScrollController();
     _tabController = new TabController(vsync: this, length: 2, initialIndex: 0);
     _tabController.addListener((){setState((){});});
@@ -37,6 +50,7 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       
       body: NestedScrollView(
@@ -50,14 +64,15 @@ class _MyTabState extends State<Home> with SingleTickerProviderStateMixin {
               floating: true,
               forceElevated: innerBoxIsScrolled,
 
-              actions: <Widget>[
+              //Uncomment to get Settings 
+              /*actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.settings,color: Globals.secondInterfaceCol,),
                   onPressed: (){
                     Navigator.of(context).pushNamed('/settings');
                     },
                 )
-              ],
+              ],*/
               
               bottom: TabBar(
                 indicatorColor: Globals.secondInterfaceCol,

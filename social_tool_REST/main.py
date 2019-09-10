@@ -69,7 +69,7 @@ def auth(username,password):
 
       with open('cookies/cookie2', "wb") as f:
         pickle.dump(user_cook,f)
-      print("ERRRRRRROROROOROROR "+user_info)
+      print("ERRRRRRROROROOROROR "+str(user_info))
       return fl.jsonify(user_info)
 
     except Exception as e:

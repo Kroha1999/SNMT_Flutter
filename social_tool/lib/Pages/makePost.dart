@@ -16,24 +16,31 @@ import 'package:uuid/uuid.dart';
 class MakePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Make a Post",style: TextStyle(color: Globals.secondInterfaceCol),),iconTheme: IconThemeData(color: Globals.secondInterfaceCol), 
-        backgroundColor:  Globals.interfaceCol ,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.info,color: Colors.black),
-            onPressed: null,
-            )
-        ],
-        ),
-
-      body: Container(
-        color: Globals.backgroundCol,
-        child: Center(
-          child: ChooseAccs(),
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Make a Post",style: TextStyle(color: Globals.secondInterfaceCol),),iconTheme: IconThemeData(color: Globals.secondInterfaceCol), 
+          backgroundColor:  Globals.interfaceCol ,
+          //Uncomment to get info widget
+          /*actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.info,color: Colors.black),
+              onPressed: null,
+              )
+          ],*/
+          ),
+        body: Container(
+          color: Globals.backgroundCol,
+          child: Center(
+            child: ChooseAccs(),
+          ),
         ),
       ),
+      onWillPop: (){
+        DataController.lastCroppedPhoto = null;
+        DataController.mainText = null;
+        return Future(()=>true);
+      }
     );
   }
 }
@@ -423,7 +430,12 @@ class _MakePostBodyState extends State<MakePostBody> {
                   child: FlatButton(
                     color: Colors.white,
                     onPressed: (){
-
+                      for(var acc in widget.chosenAccs){
+                        if(acc.getSocial()=='Instagram' && DataController.lastCroppedPhoto == null){
+                          DataController.showMessage(context, "For Instagram posts photo must be added!");
+                          return;
+                        }
+                      }
 
                       // POSTING FUNCTION + POST VIEW
                       var postToPost = PostData(
@@ -434,25 +446,29 @@ class _MakePostBodyState extends State<MakePostBody> {
                         DataController.aditionalStringsData[0],
                         mainTextController.text,//mainText
                         DataController.aditionalStringsData[1],
-                        "Processing",
+                        "Posted",
                         time: DateTime.now()
                         );
                       postToPost.postApost();
                       DataController.posts.add(PostListEl(postToPost));
                       DataController.postsDatas.add(postToPost);
+                      DataController.lastCroppedPhoto = null;
+                      DataController.mainText = null;
                       //Saving posts instances
                       //DataController.deleteAllPosts();
                       DataController.savePosts();
                       //Moving to posts
                       Navigator.pop(context);
-
+                      
                       },
                     textColor: Colors.black,
-                    shape:  RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(9),topLeft: Radius.circular(9),topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
+                    shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    // shape:  RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(9),topLeft: Radius.circular(9),topRight: Radius.circular(30),bottomRight: Radius.circular(30))),
                     child: Text('Post',style: TextStyle(color: Colors.black),),
                   ),
                 ),
-                Positioned(
+                //Uncomment for Schedule button 
+                /*Positioned(
                   right: 101,
                   child: FlatButton(
                     color: Colors.white,
@@ -461,7 +477,7 @@ class _MakePostBodyState extends State<MakePostBody> {
                     shape:  RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(9),bottomRight: Radius.circular(9),topLeft: Radius.circular(30),bottomLeft: Radius.circular(30))),
                     child: Text('Schedule',style: TextStyle(color: Colors.black),),
                   ),
-                ),
+                ),*/
 
               ],),
               decoration: BoxDecoration(
@@ -612,13 +628,16 @@ class _MakePostBodyState extends State<MakePostBody> {
   AlertDialog alert = AlertDialog(
     title: Text(title),
     content: Container(
-      child: Column(children: <Widget>[
+      height: 300,
+      width: 300,
+      child: ListView(children: <Widget>[
         Text("Here you can choose where this start string will be added to:"),
         ChooseAddStringOption(chosenAccs,index,),
         TextField(
           controller: addStringController,
           keyboardType: TextInputType.multiline,
           maxLines: 5,
+          //expands: true,
           cursorColor: Colors.black,
           decoration: InputDecoration(
             hintText: "Write your start string here",

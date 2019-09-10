@@ -118,12 +118,13 @@ class _PostListElState extends State<PostListEl> {
               left: 83,
               child: Material(
                 child: Container(
+                  color: Colors.white,
                   height: 55,
                   width: 175,
                   child: Text(widget._description,
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 9, wordSpacing: 1),
+                    style: TextStyle(fontSize: 13, wordSpacing: 1),
                     textAlign: TextAlign.justify,
                     
                   )
@@ -132,22 +133,27 @@ class _PostListElState extends State<PostListEl> {
             ),
             Align(
               alignment: Alignment.topRight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  //STATUS
-                  Material(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 4, 0, 2),
-                      child: Text(widget._status, style: TextStyle(color:Colors.green,fontSize: 12),)
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    //STATUS
+                    Material(
+                    color: Colors.white,
+                      child: Container(
+                        
+                        margin: EdgeInsets.fromLTRB(0, 4, 0, 2),
+                        child: Text(widget._status, style: TextStyle(color:Colors.green,fontSize: 12),)
+                      ),
                     ),
-                  ),
-                  //TIME
-                  Material(child: Text(widget._timeStamp.year.toString()+"/"+widget._timeStamp.month.toString()+"/"+widget._timeStamp.day.toString(), style: TextStyle(color:Colors.grey,fontSize: 8),)),
-                  Material(child: Text(widget._timeStamp.hour.toString()+":"+widget._timeStamp.minute.toString()+":"+widget._timeStamp.second.toString(), style: TextStyle(color:Colors.grey,fontSize: 8),)),
-                  
-                ],
+                    //TIME
+                    Material(color: Colors.white,child: Text(widget._timeStamp.year.toString()+"/"+widget._timeStamp.month.toString()+"/"+widget._timeStamp.day.toString(), style: TextStyle(color:Colors.black87,fontSize: 8),)),
+                    Material(color: Colors.white,child: Text(widget._timeStamp.hour.toString()+":"+widget._timeStamp.minute.toString()+":"+widget._timeStamp.second.toString(), style: TextStyle(color:Colors.black87,fontSize: 8),)),
+                    
+                  ],
+                ),
               )
             ),
             Positioned(

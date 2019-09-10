@@ -50,17 +50,16 @@ class MyPost extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("My Post",style: TextStyle(color: Globals.secondInterfaceCol),),iconTheme: IconThemeData(color: Globals.secondInterfaceCol), backgroundColor:  Globals.interfaceCol ,),
       body: Container(
-        color: Globals.backgroundCol,
+        color: Colors.black26,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               widget,
               GestureDetector(
                 onTap: (){deleteEl(context,widget);},
                 child: deleteView(),
               )
-
             ],
           ),
         ),
@@ -81,9 +80,9 @@ class MyPost extends StatelessWidget {
       width: 360.0,
       height: 50,
       decoration: BoxDecoration(
-          border: Border.all(color: Globals.secondInterfaceCol, width: 1),
+          //border: Border.all(color: Globals.secondInterfaceCol, width: 1),
           borderRadius: BorderRadius.circular(20.0),
-          color: Colors.redAccent,
+          color: Colors.red,
         ),
     );
   }

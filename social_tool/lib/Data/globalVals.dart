@@ -8,7 +8,7 @@ ThemeData sociallAppTheme = ThemeData(
 class Globals
 {
 
-  static const String url = "http://10.0.3.2:5000";
+  static const String url = "http://localhost:8081";//"http://10.0.2.2:5000";//"http://0.0.0.0:5000";
 
   static const Color interfaceCol = Colors.white;
   static const Color secondInterfaceCol = Colors.black;

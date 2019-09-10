@@ -51,10 +51,11 @@ class AccChooser extends StatelessWidget {
                 Hero(
                   tag: "addAccInta",
                   child: Container(
-                      width: 35,
-                      height: 35,
+                      width: 45,
+                      height: 45,
                       margin: EdgeInsets.fromLTRB(5, 0, 80, 0),
                       decoration: BoxDecoration(
+                        border: Border.all(width: 1,color: Colors.white),
                         shape: BoxShape.circle,
                         color: Colors.white,
                         image: DecorationImage(
@@ -82,7 +83,7 @@ class AccChooser extends StatelessWidget {
           ),
 
         //TWITTER ADD ACCOUNT
-        GestureDetector(
+        /*GestureDetector(
           onTap: (){
             //Go to Twitter Page (DEBUG to Insta)
             goNext(context,AddInsta());
@@ -120,7 +121,7 @@ class AccChooser extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        ),*/
       ],),
     );
   }
@@ -133,9 +134,6 @@ class AddInsta extends StatelessWidget {
   final controllerNick = TextEditingController();
   final controllerPass = TextEditingController();
   
-
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,6 +162,7 @@ class AddInsta extends StatelessWidget {
                             height: 75,
                             margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                             decoration: BoxDecoration(
+                              border: Border.all(width: 2,color: Colors.white),
                               shape: BoxShape.circle,
                               color: Colors.white,
                               image: DecorationImage(
@@ -211,6 +210,7 @@ class AddInsta extends StatelessWidget {
                         child: TextField(
                           controller: controllerPass,
                           obscureText: true,
+                          autocorrect: false,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Password"
